@@ -51,15 +51,6 @@ namespace HackThePlanet
             Font = Content.Load<SpriteFont>("tempfont");
             WhiteHat = Content.Load<Texture2D>("ai-white");
             BlackHat = Content.Load<Texture2D>("ai-black");
-
-
-            //Components.Add(new BackgroundGridComponent(this, Content.Load<Texture2D>("block")));
-
-            //var sprite = new SpriteComponent(this, _sprites, 16, 16, 23, scale: 4);
-            //sprite.Color = Palette.BloodOrange;
-            //Components.Add(sprite);
-
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -78,12 +69,6 @@ namespace HackThePlanet
                                SamplerState.PointWrap,
                                DepthStencilState.Default,
                                RasterizerState.CullNone);
-            //transformMatrix: Matrix.CreateTranslation(0, 8, 0));
-            //transformMatrix: Matrix.CreateScale(4f));
-
-            // TODO: Add your drawing code here
-            //_spriteBatch.Draw(_sprites, Vector2.Zero, Color.White);
-
             base.Draw(gameTime);
             _spriteBatch.End();
         }

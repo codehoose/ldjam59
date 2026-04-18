@@ -9,9 +9,10 @@ namespace HackThePlanet.FSM.Gameplay
     /// Base class for all main loop base states, this will by default draw the pieces
     /// on the board, the main board etc.
     /// </summary>
-    internal class MainLoopGameState : BaseState<MainLoopGameState>
+    internal class MainLoopGameState<T> : BaseState<T> where T: IState
     {
         private BackgroundGridComponent _grid;
+        private GameStateComponent _gameState;
         private List<AgentRenderComponent> _agents = [];
 
         public override void Enter(StateManager stateManager)
@@ -24,6 +25,7 @@ namespace HackThePlanet.FSM.Gameplay
             }
 
             AddComponent(_grid);
+            AddComponent(_gameState);
             foreach (var agent in _agents)
             {
                 agent.Init();
@@ -43,6 +45,8 @@ namespace HackThePlanet.FSM.Gameplay
                 var agentComponent = new AgentRenderComponent(Game, a, textures[index++]);
                 _agents.Add(agentComponent);
             }
+
+            _gameState = new GameStateComponent(Game);
         }
     }
 }

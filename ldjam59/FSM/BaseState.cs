@@ -1,4 +1,5 @@
-﻿using HackThePlanet.Models;
+﻿using HackThePlanet.Components;
+using HackThePlanet.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
@@ -35,7 +36,15 @@ namespace HackThePlanet.FSM
 
         public virtual void Exit(StateManager stateManager)
         {
-            foreach (var c in _components) HackThePlanetGame.Instance.Components.Remove(c);
+            foreach (var c in _components)
+            {
+                if (c is IParentComponent parent)
+                {
+                    parent.RemoveComponents();
+                }
+
+                HackThePlanetGame.Instance.Components.Remove(c);
+            }
         }
 
         public virtual void Tick(float deltaTime)
@@ -47,6 +56,11 @@ namespace HackThePlanet.FSM
         {
             HackThePlanetGame.Instance.Components.Add(component);
             _components.Add(component);
+
+            if (component is IParentComponent parent)
+            {
+                parent.AddComponents();
+            }
         }
     }
 }

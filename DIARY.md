@@ -21,3 +21,7 @@ Now on to the first action; summoning! I still feel better at this point in the 
 ## 2026-04-18 17:14 Two hours on a button!?
 
 But it's an important button. All the menu controls will be through this button, so it's best getting this right just now. On to the actual actions part of this!
+
+## 2026-04-18 19:05 States, states and what a state
+
+Slowly getting there. I am fixating on the smaller details and just need to hammer through. I think I can get to a point tonight where I can deploy something. Make it at least feel like a game. So far, I have a menu system working and when you select "deploy" it changes to a selection cursor; green for you can place this here, red for you can't. Progress!

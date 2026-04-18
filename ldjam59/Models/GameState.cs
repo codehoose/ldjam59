@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace HackThePlanet.Models
@@ -18,30 +17,21 @@ namespace HackThePlanet.Models
         public Player CurrentPlayer => _currentPlayer;
         public int CurrentPlayerIndex => _current;
         public Player Winner => _winner;
+        public int Cycles => _cycles;
+        public UnitType UnitToDeploy { get; set; } = UnitType.None;
 
         private IUnit[] Units => _board.GetAllUnits();
 
         public IEnumerable<Agent> GetAgents() => _players.Select(p => p.Agent);
 
-        public (int, int) GetAgentGridPosition(Agent agent)
-        {
-            var x = agent.TileIndex % 10;
-            var y = agent.TileIndex / 10;
-            return (x, y);
-        }
-
-        public int GetTileIndex(int x, int y)
-        {
-            var cx = Math.Clamp(x, 0, 9);
-            var cy = Math.Clamp(y, 0, 9);
-
-            return cy * 10 + cx;
-        }
+        public (int, int) GetAgentGridPosition(Agent agent) => _board.GetAgentGridPosition(agent);
+        public List<int> GetFreeSquaresAround(Agent agent) => _board.GetFreeSquaresAround(agent);
+        public int GetTileIndex(int x, int y) => _board.GetTileIndex(x, y);
 
         public void Init()
         {
-            _players[0] = new Player(GetTileIndex(1, 1)) { Name = "Abercromby" };
-            _players[1] = new Player(GetTileIndex(8, 8)) { Name = "Bertram" };
+            _players[0] = _board.AddPlayer("Abercromby", 1, 1);
+            _players[1] = _board.AddPlayer("Bertram", 8, 8);
             _currentPlayer = _players[_current];
             _cycles = DEFAULT_CYCLES;
         }

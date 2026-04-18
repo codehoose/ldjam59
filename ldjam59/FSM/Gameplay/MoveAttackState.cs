@@ -1,6 +1,6 @@
 ﻿namespace HackThePlanet.FSM.Gameplay
 {
-    internal class MoveAttackState : MainLoopGameState
+    internal class MoveAttackState : MainLoopGameState<MoveAttackState>
     {
     }
 }

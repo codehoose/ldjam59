@@ -13,6 +13,7 @@ namespace HackThePlanet.Components
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
+            if (string.IsNullOrEmpty(Text)) return;
             HtpGame.SpriteBatch.DrawString(HtpGame.Font, Text, Position, Color, 0f, Vector2.Zero, 1f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None, SortOrder);
         }
     }

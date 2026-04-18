@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Windows.Forms;
 
 namespace HackThePlanet.FSM.Gameplay
 {
@@ -37,7 +36,7 @@ namespace HackThePlanet.FSM.Gameplay
 
         private void Button_Click(object sender, EventArgs e)
         {
-            StateManager.ChangeState(MoveAttackState.Instance);
+            StateManager.ChangeState(SummonState.Instance);
         }
     }
 }
