@@ -25,3 +25,9 @@ But it's an important button. All the menu controls will be through this button,
 ## 2026-04-18 19:05 States, states and what a state
 
 Slowly getting there. I am fixating on the smaller details and just need to hammer through. I think I can get to a point tonight where I can deploy something. Make it at least feel like a game. So far, I have a menu system working and when you select "deploy" it changes to a selection cursor; green for you can place this here, red for you can't. Progress!
+
+## 2026-04-18 21:10 Time for a rest. Watch some TV?
+
+I have some gameplay! The players can take turns to place items on the grid. There are currently two "AIs" that control various programs; a crawler and a drone for now. And those can be placed on the grid near the AI. There are a limited number of cycles (think: mana) so you have to watch that resource too. Next up is movement and starting processes (think: spells!) All good stuff.
+
+![Things are starting to come together!](.images/some-gameplay.png "Finally, some gameplay!")

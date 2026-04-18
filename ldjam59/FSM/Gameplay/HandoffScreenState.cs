@@ -20,7 +20,7 @@ namespace HackThePlanet.FSM.Gameplay
             {
                 _button = new ButtonComponent(Game,
                     Content.Load<Texture2D>("button"),
-                    $"Your turn P<{stateManager.Game.State.CurrentPlayerIndex}> {stateManager.Game.State.CurrentPlayer.Name}",
+                    "",
                     256,
                     4)
                 {
@@ -31,6 +31,7 @@ namespace HackThePlanet.FSM.Gameplay
 
             }
 
+            _button.Text = $"Your turn P<{stateManager.Game.State.CurrentPlayerIndex}> {stateManager.Game.State.CurrentPlayer.Name}";
             AddComponent(_button);
         }
 

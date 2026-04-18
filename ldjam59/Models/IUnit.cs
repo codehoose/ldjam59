@@ -4,5 +4,6 @@
     {
         int TileIndex { get; }
         bool HasActed { get; }
+        UnitType Type { get; }
     }
 }

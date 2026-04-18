@@ -7,8 +7,9 @@
     {
         public Player Owner { get; }
         public int TileIndex { get; set; }
-        public bool IsAlive { get; set; }
+        public bool IsAlive { get; set; } = true;
         public bool HasActed { get; set; }
+        public UnitType Type { get; } = UnitType.None;
 
         public Agent(Player owner, int tileIndex)
         {

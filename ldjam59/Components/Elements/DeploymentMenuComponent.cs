@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HackThePlanet.Models;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
@@ -9,12 +10,14 @@ namespace HackThePlanet.Components.Elements
         private readonly ButtonComponent _deployCrawler;
         private readonly ButtonComponent _deployDrone;
         private readonly ButtonComponent _endDeploy;
+        private int _cycles;
 
         public event EventHandler<MenuChoiceEventArgs> OnClick;
 
         public DeploymentMenuComponent(HackThePlanetGame game, Texture2D buttonTexture) : base(game)
         {
             var pos = new Vector2(750 - 380 / 2, 300);
+            _cycles = game.State.Cycles;
 
             _deployCrawler = new ButtonComponent(game, buttonTexture, "Deploy Crawler", 380, 4)
             {
@@ -22,12 +25,14 @@ namespace HackThePlanet.Components.Elements
             };
             pos += new Vector2(0, 40);
             _deployCrawler.OnClick += Button_Click;
+            _deployCrawler.Disabled = HtpGame.State.Cycles < 1;
 
             _deployDrone = new ButtonComponent(game, buttonTexture, "Deploy Drone", 380, 4)
             {
                 Position = pos
             };
             _deployDrone.OnClick += Button_Click;
+            _deployDrone.Disabled = HtpGame.State.Cycles < 2;
 
             pos += new Vector2(0, 60);
             _endDeploy = new ButtonComponent(game, buttonTexture, "End Deploy", 380, 4)
@@ -35,6 +40,18 @@ namespace HackThePlanet.Components.Elements
                 Position = pos
             };
             _endDeploy.OnClick += Button_Click;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            if (_cycles != HtpGame.State.Cycles)
+            {
+                _deployCrawler.Disabled = HtpGame.State.Cycles < 1;
+                _deployDrone.Disabled = HtpGame.State.Cycles < 2;
+                _cycles = HtpGame.State.Cycles;
+            }
         }
 
         public void RemoveComponents()

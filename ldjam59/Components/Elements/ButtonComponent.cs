@@ -14,12 +14,14 @@ namespace HackThePlanet.Components.Elements
         private Vector2 _textOffset;
         private ButtonState _previousButtonState;
         private bool _pressedInside;
-
+        
         public event EventHandler OnClick;
 
-        private string Text { get; set; }
+        public string Text { get; set; }
 
         public Color TextColor { get; set; } = Color.Black;
+
+        public bool Disabled { get; set; }
 
         public ButtonComponent(HackThePlanetGame game, Texture2D texture, string text, int width, int endCapWidth) : base(game, texture, Layer.Gui)
         {
@@ -40,7 +42,13 @@ namespace HackThePlanet.Components.Elements
             _textOffset = (new Vector2(rect.Width, rect.Height) - HtpGame.Font.MeasureString(Text)) / 2f;
 
             _offset = mouseContained && isPressed ? _spriteSheet.CellWidth : 0;
-            _textOffset += mouseContained && isPressed ? new Vector2(2, 2) : Vector2.Zero;
+
+            _textOffset += !Disabled && mouseContained && isPressed ? new Vector2(2, 2) : Vector2.Zero;
+            if (Disabled)
+            {
+                _offset = _spriteSheet.CellWidth * 2;
+                return;
+            }
 
             if (!wasPressed && isPressed)
             {
@@ -63,11 +71,6 @@ namespace HackThePlanet.Components.Elements
 
         public override void Draw(GameTime gameTime)
         {
-            // Draw:
-            // +--+----------+--+
-            // |  |          |  |
-            // +--+----------+--+
-
             var leftHand = new Rectangle(_offset, 0, _endCapWidth, Texture.Height);
             var rightHand = new Rectangle(_offset + 32 - _endCapWidth, 0, _endCapWidth, Texture.Height);
             var middleSrc = new Rectangle(_offset + 4, 0, 32 - _endCapWidth * 2, Texture.Height);
@@ -76,7 +79,10 @@ namespace HackThePlanet.Components.Elements
             HtpGame.SpriteBatch.Draw(Texture, Position, leftHand, Color, 0f, Vector2.Zero, Scale, SpriteEffects.None, SortOrder);
             HtpGame.SpriteBatch.Draw(Texture, Position+ new Vector2(_width-_endCapWidth, 0), rightHand, Color, 0f, Vector2.Zero, Scale, SpriteEffects.None, SortOrder);
             HtpGame.SpriteBatch.Draw(Texture, middleDest, middleSrc, Color, 0f, Vector2.Zero, SpriteEffects.None, SortOrder);
-            HtpGame.SpriteBatch.DrawString(HtpGame.Font, Text, Position + _textOffset, TextColor, 0f, new Vector2(0.5f, 0.5f), 1f, SpriteEffects.None, Layer.GuiFront);
+
+            var txtColor = Disabled ? Color.Gray : TextColor;
+
+            HtpGame.SpriteBatch.DrawString(HtpGame.Font, Text, Position + _textOffset, txtColor, 0f, new Vector2(0.5f, 0.5f), 1f, SpriteEffects.None, Layer.GuiFront);
         }
     }
 }

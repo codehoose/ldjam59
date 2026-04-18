@@ -11,9 +11,15 @@ namespace HackThePlanet.Models
 
         public readonly IUnit[] _board = new IUnit[WIDTH * HEIGHT];
 
-        public IUnit[] GetAllUnits() => _board.Where(b => b != null).ToArray();
+        /// <summary>
+        /// Gets all the basic units, does not return Agents. 
+        /// </summary>
+        /// <returns></returns>
+        public IUnit[] GetAllUnits() => _board.Where(b => b != null && b is not Agent).ToArray();
 
         public bool IsOccupied(int index) => _board[index] != null;
+
+        public bool IsOccupied(int x, int y) => _board[GetTileIndex(x, y)] != null;
 
         public Player AddPlayer(string playerName, int x, int y)
         {
@@ -23,7 +29,15 @@ namespace HackThePlanet.Models
             return player;
         }
 
-        public List<int> GetFreeSquaresAround(Agent agent)
+        public Unit AddUnit(Player parent, UnitType type, int x, int y, bool isIllusion)
+        {
+            var index = GetTileIndex(x, y);
+            var unit = new Unit(parent.Agent, type, isIllusion, index);
+            _board[index] = unit;
+            return unit;
+        }
+
+        public List<int> GetFreeSquaresAround(IUnit agent)
         {
             var list = new List<int>();
             var (ax, ay) = GetAgentGridPosition(agent);
@@ -43,7 +57,7 @@ namespace HackThePlanet.Models
             return list;
         }
 
-        public (int, int) GetAgentGridPosition(Agent agent)
+        public (int, int) GetAgentGridPosition(IUnit agent)
         {
             var x = agent.TileIndex % 10;
             var y = agent.TileIndex / 10;

@@ -13,7 +13,8 @@ namespace HackThePlanet.FSM.Gameplay
     {
         private BackgroundGridComponent _grid;
         private GameStateComponent _gameState;
-        private List<AgentRenderComponent> _agents = [];
+        private List<UnitRenderComponent> _agents = [];
+        //private List<UnitRenderComponent> _units = [];
 
         public override void Enter(StateManager stateManager)
         {
@@ -22,6 +23,14 @@ namespace HackThePlanet.FSM.Gameplay
             if (_grid == null)
             {
                 SetupComponents(stateManager);
+            }
+
+            foreach (var u in Game.State.GetUnits())
+            {
+                var tex = u.Type == Models.UnitType.Crawler ? Game.Crawler : Game.Drone;
+                var unit = new UnitRenderComponent(Game, u, tex);
+                //_units.Add(unit);
+                AddComponent(unit);
             }
 
             AddComponent(_grid);
@@ -42,7 +51,7 @@ namespace HackThePlanet.FSM.Gameplay
             var index = 0;
             foreach (var a in Game.State.GetAgents())
             {
-                var agentComponent = new AgentRenderComponent(Game, a, textures[index++]);
+                var agentComponent = new UnitRenderComponent(Game, a, textures[index++]);
                 _agents.Add(agentComponent);
             }
 

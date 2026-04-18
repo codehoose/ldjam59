@@ -22,6 +22,8 @@ namespace HackThePlanet
         public SpriteFont Font { get; private set; }
         public Texture2D WhiteHat { get; private set; }
         public Texture2D BlackHat { get; private set; }
+        public Texture2D Crawler { get; private set; }
+        public Texture2D Drone { get; private set; }
 
         public HackThePlanetGame()
         {
@@ -33,6 +35,7 @@ namespace HackThePlanet
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Instance = this;
+            Window.Title = "Hack the Planet!";
         }
 
         protected override void Initialize()
@@ -51,6 +54,8 @@ namespace HackThePlanet
             Font = Content.Load<SpriteFont>("tempfont");
             WhiteHat = Content.Load<Texture2D>("ai-white");
             BlackHat = Content.Load<Texture2D>("ai-black");
+            Crawler = Content.Load<Texture2D>("crawler");
+            Drone = Content.Load<Texture2D>("crawler");
         }
 
         protected override void Update(GameTime gameTime)

@@ -11,7 +11,8 @@ namespace HackThePlanet.FSM.Gameplay
     {
         private ButtonComponent _cancel;
         private HighlightCursorComponent _cursor;
-        private Color _color;
+        private ButtonState _previousButtonState;
+        private bool _pressedInside;
 
         public override void Tick(float deltaTime)
         {
@@ -35,6 +36,28 @@ namespace HackThePlanet.FSM.Gameplay
             _cursor.Enabled = true;
             _cursor.Color = (acceptablePositions.Contains(index) ? Color.Green : Color.Red) * .5f;
             _cursor.Position = new Vector2(x, y) * 54;
+
+            var mouseContained = _cursor.Contained;
+            var isPressed = mouseState.LeftButton == ButtonState.Pressed;
+            var wasPressed = _previousButtonState == ButtonState.Pressed;
+
+            if (!wasPressed && isPressed)
+            {
+                _pressedInside = mouseContained;
+            }
+
+            if (wasPressed && !isPressed)
+            {
+                if (_pressedInside && mouseContained)
+                {
+                    DoClick(x, y);
+                }
+
+                _pressedInside = false;
+            }
+
+            _previousButtonState = mouseState.LeftButton;
+
         }
 
         public override void Enter(StateManager stateManager)
@@ -44,7 +67,7 @@ namespace HackThePlanet.FSM.Gameplay
             if (_cancel==null)
             {
                 var pos = new Vector2(750 - 380 / 2, 400);
-                _cancel = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "Cancel Deploy", 380, 4)
+                _cancel = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "End Deploy", 380, 4)
                 {
                     Position = pos
                 };
@@ -74,6 +97,17 @@ namespace HackThePlanet.FSM.Gameplay
 
         public void Cancel_Clicked(object sender, EventArgs e)
         {
+            StateManager.ChangeState(SummonState.Instance);
+        }
+
+        private void DoClick(int x, int y)
+        {
+            if (GameState.IsOccupied(x, y))
+            {
+                return;
+            }
+
+            GameState.DeployUnit(x, y);
             StateManager.ChangeState(SummonState.Instance);
         }
     }

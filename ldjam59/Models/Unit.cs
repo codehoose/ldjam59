@@ -4,15 +4,15 @@
     {
         public Agent Agent { get; }
         public UnitType Type { get; }
-        public bool IsIllusion { get; }
+        public bool IsGhost { get; }
         public int TileIndex { get; set; }
         public bool HasActed { get; set; }
 
-        public Unit(Agent agent, UnitType type, bool isIllusion, int tileIndex)
+        public Unit(Agent agent, UnitType type, bool isGhost, int tileIndex)
         {
             Agent = agent;
             Type = type;
-            IsIllusion = isIllusion;
+            IsGhost = isGhost;
             TileIndex = tileIndex;
         }
     }

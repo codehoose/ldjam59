@@ -52,6 +52,7 @@ namespace HackThePlanet.FSM.Gameplay
                     StateManager.ChangeState(DeployUnitState.Instance);
                     break;
                 case MenuChoice.EndSequence:
+                    StateManager.ChangeState(EndPlayerTurnState.Instance);
                     break;
             }
         }
