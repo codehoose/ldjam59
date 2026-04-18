@@ -41,17 +41,21 @@ namespace HackThePlanet.Models
         }
 
 
-        internal void DeployUnit(int x, int y)
+        internal bool DeployUnit(int x, int y)
         {
             if (UnitToDeploy == UnitType.None)
             {
-                return;
+                return false;
             }
 
-            _cycles -= (UnitToDeploy == UnitType.Crawler ? 1 : 2);
+            var unitAdded = _board.AddUnit(_currentPlayer, UnitToDeploy, x, y, UnitToDeployIsGhost);
+            if (unitAdded != null)
+            {
+                _cycles -= (UnitToDeploy == UnitType.Crawler ? 1 : 2);
+                UnitToDeploy = UnitType.None;
+            }
 
-            _ = _board.AddUnit(_currentPlayer, UnitToDeploy, x, y, UnitToDeployIsGhost);
-            UnitToDeploy = UnitType.None;
+            return unitAdded != null;
         }
 
         public EndTurnCondition EndCurrentPlayerTurn()

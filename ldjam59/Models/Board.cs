@@ -31,7 +31,10 @@ namespace HackThePlanet.Models
 
         public Unit AddUnit(Player parent, UnitType type, int x, int y, bool isIllusion)
         {
+            var acceptableTiles = GetFreeSquaresAround(parent.Agent);
             var index = GetTileIndex(x, y);
+            if (!acceptableTiles.Contains(index)) return null;
+
             var unit = new Unit(parent.Agent, type, isIllusion, index);
             _board[index] = unit;
             return unit;

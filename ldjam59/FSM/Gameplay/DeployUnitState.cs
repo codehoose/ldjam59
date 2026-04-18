@@ -50,6 +50,7 @@ namespace HackThePlanet.FSM.Gameplay
             {
                 if (_pressedInside && mouseContained)
                 {
+                    _previousButtonState = ButtonState.Released;
                     DoClick(x, y);
                 }
 
@@ -107,8 +108,10 @@ namespace HackThePlanet.FSM.Gameplay
                 return;
             }
 
-            GameState.DeployUnit(x, y);
-            StateManager.ChangeState(SummonState.Instance);
+            // TODO: Sound effects!
+            var success = GameState.DeployUnit(x, y);
+            if (success)
+                StateManager.ChangeState(SummonState.Instance);
         }
     }
 }
