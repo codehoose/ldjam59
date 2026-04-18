@@ -1,2 +1,2 @@
-﻿using var game = new ldjam59.LDJamGame();
+﻿using var game = new HackThePlanet.HackThePlanetGame();
 game.Run();

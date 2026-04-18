@@ -1,11 +1,11 @@
-﻿using ldjam59.Components;
+﻿using HackThePlanet.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ldjam59
+namespace HackThePlanet
 {
-    public class LDJamGame : Game
+    public class HackThePlanetGame : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -13,11 +13,13 @@ namespace ldjam59
 
         public SpriteBatch SpriteBatch { get { return _spriteBatch; } }
 
-        public LDJamGame()
+        public HackThePlanetGame()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 960,
+                PreferredBackBufferHeight = 540
+            };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -31,13 +33,12 @@ namespace ldjam59
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _sprites = Content.Load<Texture2D>("sprites");
 
-            Components.Add(new BackgroundGridComponent(this));
+            Components.Add(new BackgroundGridComponent(this, Content.Load<Texture2D>("block")));
 
-            var sprite = new SpriteComponent(this, _sprites, 16, 16, 23, scale: 4);
-            sprite.Color = Palette.BloodOrange;
-            Components.Add(sprite);
+            //var sprite = new SpriteComponent(this, _sprites, 16, 16, 23, scale: 4);
+            //sprite.Color = Palette.BloodOrange;
+            //Components.Add(sprite);
 
             // TODO: use this.Content to load your game content here
         }
@@ -59,9 +60,9 @@ namespace ldjam59
                                BlendState.AlphaBlend,
                                SamplerState.PointWrap,
                                DepthStencilState.Default,
-                               RasterizerState.CullNone,
-                               transformMatrix: Matrix.CreateTranslation(0, 8, 0));
-                               //transformMatrix: Matrix.CreateScale(4f));
+                               RasterizerState.CullNone);
+            //transformMatrix: Matrix.CreateTranslation(0, 8, 0));
+            //transformMatrix: Matrix.CreateScale(4f));
 
             // TODO: Add your drawing code here
             //_spriteBatch.Draw(_sprites, Vector2.Zero, Color.White);

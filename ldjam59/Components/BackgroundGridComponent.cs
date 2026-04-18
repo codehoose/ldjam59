@@ -1,27 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ldjam59.Components
+namespace HackThePlanet.Components
 {
-    internal class BackgroundGridComponent : SKDrawableGameComponent<LDJamGame>
+    internal class BackgroundGridComponent : HtpDrawableComponent
     {
-        Texture2D _texture;
-        public BackgroundGridComponent(LDJamGame game) : base(game)
+        private readonly Texture2D _block;
+
+        public BackgroundGridComponent(HackThePlanetGame game, Texture2D block) : base(game)
         {
-            _texture = new Texture2D(game.GraphicsDevice, 1, 1);
-            _texture.SetData(new Color[] { Color.White });
+            _block = block;
         }
 
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            for (var y = 0; y < 11; y++)
+            for (var y = 0; y < 10; y++)
             {
-                var doPlum = y == 0 || y % 2 == 0;
-                for (var x = 0; x < 20; x++)
+                for (var x = 0; x < 10; x++)
                 {
-                    var color = (x + y) % 2 == 1 ? Palette.Dark : Palette.DarkPlum;
-                    TheGame.SpriteBatch.Draw(_texture, new Rectangle(x * 64, y * 64, 64, 64), null, color, 0f, Vector2.Zero, SpriteEffects.None, 0);
+                    HtpGame.SpriteBatch.Draw(_block, new Rectangle(x * 54, y * 54, 54, 54), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, Layer.Background);
                 }
             }
         }

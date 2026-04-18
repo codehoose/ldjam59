@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace ldjam59.Components
+namespace HackThePlanet.Components
 {
-    internal class SpriteComponent : SKDrawableGameComponent<LDJamGame>
+    internal class SpriteComponent : HtpDrawableComponent
     {
         private readonly Texture2D _texture;
         private Rectangle _srcRect;
@@ -31,7 +31,7 @@ namespace ldjam59.Components
 
         public Vector2 Position { get; set; }
 
-        public SpriteComponent(LDJamGame game, Texture2D texture, int cellWidth, int cellHeight, int index = 0, int sort = 0, float scale = 1f)
+        public SpriteComponent(HackThePlanetGame game, Texture2D texture, int cellWidth, int cellHeight, int index = 0, int sort = 0, float scale = 1f)
             : base(game)
         {
             _texture = texture;
@@ -62,7 +62,7 @@ namespace ldjam59.Components
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            TheGame.SpriteBatch.Draw(_texture, Position, _srcRect, Color, 0f,
+            HtpGame.SpriteBatch.Draw(_texture, Position, _srcRect, Color, 0f,
                 Vector2.Zero, Scale, SpriteEffects.None, SortOrder);
         }
 
