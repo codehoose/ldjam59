@@ -5,9 +5,6 @@ namespace HackThePlanet.Components
     internal class TextComponent : HtpDrawableComponent
     {
         public string Text { get; set; }
-        public Vector2 Position { get; set; }
-        public Color Color { get; set; } = Color.White;
-
 
         public TextComponent(HackThePlanetGame game) : base(game, null, Layer.GuiFront)
         {

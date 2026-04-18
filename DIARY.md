@@ -17,3 +17,7 @@ Had some lunch and back at it. I have the raw states done and can move the game 
 ![It's taken me all day to get here!](.images/first-shot.png "It's progress!")
 
 Now on to the first action; summoning! I still feel better at this point in the process than any other game jam. I think my idea of coming up with a game type and trying to fit it with the jam has really worked. It gave me a week to basically come up with what I _wanted_ to do. Planning, eh?!
+
+## 2026-04-18 17:14 Two hours on a button!?
+
+But it's an important button. All the menu controls will be through this button, so it's best getting this right just now. On to the actual actions part of this!

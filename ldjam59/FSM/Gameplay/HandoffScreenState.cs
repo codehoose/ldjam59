@@ -1,39 +1,43 @@
-﻿using HackThePlanet.Components;
+﻿using HackThePlanet.Components.Elements;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Windows.Forms;
 
 namespace HackThePlanet.FSM.Gameplay
 {
     internal class HandoffScreenState : BaseState<HandoffScreenState>
     {
-        private TextComponent _text;
-        private WaitForMouseClickComponent _waitForIt;
+        private ButtonComponent _button;
 
         public override void Enter(StateManager stateManager)
         {
             base.Enter(stateManager);
 
-            if (_text == null)
+
+            var pos = new Vector2(Game.GraphicsDevice.Viewport.Width - 256, Game.GraphicsDevice.Viewport.Height - 32) / 2f;
+
+            if (_button == null)
             {
-                _text = new TextComponent(stateManager.Game);
-                _waitForIt = new WaitForMouseClickComponent(stateManager.Game);
+                _button = new ButtonComponent(Game,
+                    Content.Load<Texture2D>("button"),
+                    $"Your turn P<{stateManager.Game.State.CurrentPlayerIndex}> {stateManager.Game.State.CurrentPlayer.Name}",
+                    256,
+                    4)
+                {
+                    Position = pos
+                };
+
+                _button.OnClick += Button_Click;
+
             }
 
-            _waitForIt.MouseClicked += Mouse_Clicked;
-            _text.Text = $"Your turn P<{stateManager.Game.State.CurrentPlayerIndex}> {stateManager.Game.State.CurrentPlayer.Name}";
-
-            AddComponent(_text);
-            AddComponent(_waitForIt);
+            AddComponent(_button);
         }
 
-        public override void Exit(StateManager stateManager)
+        private void Button_Click(object sender, EventArgs e)
         {
-            _waitForIt.MouseClicked -= Mouse_Clicked;
-            base.Exit(stateManager);
-        }
-
-        private void Mouse_Clicked(object sender, EventArgs e)
-        {
-            StateManager.ChangeState(SummonState.Instance);
+            StateManager.ChangeState(MoveAttackState.Instance);
         }
     }
 }
