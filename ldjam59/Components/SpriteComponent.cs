@@ -6,7 +6,6 @@ namespace HackThePlanet.Components
 {
     internal class SpriteComponent : HtpDrawableComponent
     {
-        private readonly Texture2D _texture;
         private Rectangle _srcRect;
         private int _cellWidth;
         private int _cellHeight;
@@ -14,11 +13,8 @@ namespace HackThePlanet.Components
         private int _lastIndex = -1;
 
         private int TotalFrames => Rows * Columns;
-        public int Rows => _texture.Height / _cellHeight;
-        public int Columns => _texture.Width / _cellWidth;
-        public int SortOrder { get; }
-        public Color Color { get; set; } = Color.White;
-        public float Scale { get; set; } = 1f;
+        public int Rows => Texture.Height / _cellHeight;
+        public int Columns => Texture.Width / _cellWidth;
 
         public int Index
         {
@@ -29,12 +25,9 @@ namespace HackThePlanet.Components
             }
         }
 
-        public Vector2 Position { get; set; }
-
         public SpriteComponent(HackThePlanetGame game, Texture2D texture, int cellWidth, int cellHeight, int index = 0, int sort = 0, float scale = 1f)
-            : base(game)
+            : base(game, texture, sort)
         {
-            _texture = texture;
             _cellWidth = cellWidth;
             _cellHeight = cellHeight;
             Index = index;
@@ -62,7 +55,7 @@ namespace HackThePlanet.Components
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            HtpGame.SpriteBatch.Draw(_texture, Position, _srcRect, Color, 0f,
+            HtpGame.SpriteBatch.Draw(Texture, Position, _srcRect, Color, 0f,
                 Vector2.Zero, Scale, SpriteEffects.None, SortOrder);
         }
 

@@ -4,10 +4,13 @@
     {
         private IState _currentState;
 
-        public StateManager() : this(null) { }
+        internal HackThePlanetGame Game { get; }
 
-        public StateManager(IState initialState)
+        public StateManager(HackThePlanetGame game) : this(game, null) { }
+
+        public StateManager(HackThePlanetGame game, IState initialState)
         {
+            Game = game;
             if (initialState != null)
             {
                 _currentState = initialState;
@@ -19,7 +22,7 @@
         {
             if (_currentState!=null)
             {
-                _currentState.Exit();
+                _currentState.Exit(this);
             }
 
             _currentState = newState;

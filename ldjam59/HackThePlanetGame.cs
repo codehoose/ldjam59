@@ -1,4 +1,6 @@
 ﻿using HackThePlanet.Components;
+using HackThePlanet.FSM.Gameplay;
+using HackThePlanet.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,9 +11,17 @@ namespace HackThePlanet
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D _sprites;
+        private FSMComponent _stateManager;
+
+        public static HackThePlanetGame Instance { get; private set; }
+
+        internal GameState State { get; private set; } = new();
 
         public SpriteBatch SpriteBatch { get { return _spriteBatch; } }
+
+        public SpriteFont Font { get; private set; }
+        public Texture2D WhiteHat { get; private set; }
+        public Texture2D BlackHat { get; private set; }
 
         public HackThePlanetGame()
         {
@@ -22,11 +32,11 @@ namespace HackThePlanet
             };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            Instance = this;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             base.Initialize();
         }
 
@@ -34,7 +44,16 @@ namespace HackThePlanet
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Components.Add(new BackgroundGridComponent(this, Content.Load<Texture2D>("block")));
+            _stateManager = new FSMComponent(this);
+            Components.Add(_stateManager);
+            _stateManager.StateManager.ChangeState(InitializeGameState.Instance);
+
+            Font = Content.Load<SpriteFont>("tempfont");
+            WhiteHat = Content.Load<Texture2D>("ai-white");
+            BlackHat = Content.Load<Texture2D>("ai-black");
+
+
+            //Components.Add(new BackgroundGridComponent(this, Content.Load<Texture2D>("block")));
 
             //var sprite = new SpriteComponent(this, _sprites, 16, 16, 23, scale: 4);
             //sprite.Color = Palette.BloodOrange;
@@ -48,15 +67,13 @@ namespace HackThePlanet
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack,
+            _spriteBatch.Begin(SpriteSortMode.BackToFront,
                                BlendState.AlphaBlend,
                                SamplerState.PointWrap,
                                DepthStencilState.Default,

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HackThePlanet.Models
+﻿namespace HackThePlanet.Models
 {
     internal class Player
     {
-        
+        internal string Name { get; set; }
+        internal Agent Agent { get; set; }
+
+        public Player(int tileIndex)
+        {
+            Agent = new Agent(this, tileIndex);
+        }
     }
 }
