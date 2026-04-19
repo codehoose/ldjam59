@@ -31,6 +31,8 @@ namespace HackThePlanet.Models
         public List<int> GetFreeSquaresAround(IUnit agent) => _board.GetFreeSquaresAround(agent);
         public int GetTileIndex(int x, int y) => _board.GetTileIndex(x, y);
         public bool IsOccupied(int x, int y) => _board.IsOccupied(x, y);
+        internal IUnit GetUnitAt(int x, int y) => _board.GetUnitAt(x, y);
+        internal void MoveUnit(IUnit unit, int x, int y) => _board.MoveUnit(unit, x, y);
 
         public void Init()
         {
@@ -38,6 +40,15 @@ namespace HackThePlanet.Models
             _players[1] = _board.AddPlayer("Bertram", 8, 8);
             _currentPlayer = _players[_current];
             _cycles = DEFAULT_CYCLES;
+        }
+
+        internal List<IUnit> GetPlayerUnits()
+        {
+            var agent = _currentPlayer.Agent;
+            var result = _board.GetAllUnits().Select(u => u as Unit).Where(u => u != null && u.Agent == agent)
+                .Select(u => (IUnit)u).ToList();
+            result.Add(agent);
+            return result;
         }
 
         internal List<IUnit> GetAgentUnits()

@@ -21,6 +21,15 @@ namespace HackThePlanet.Models
 
         public bool IsOccupied(int x, int y) => _board[GetTileIndex(x, y)] != null;
 
+        public IUnit GetUnitAt(int x, int y) => _board[GetTileIndex(x, y)];
+
+        internal void MoveUnit(IUnit unit, int x, int y)
+        {
+            _board[unit.TileIndex] = null;
+            unit.TileIndex = GetTileIndex(x, y);
+            _board[unit.TileIndex] = unit;
+        }
+
         public Player AddPlayer(string playerName, int x, int y)
         {
             var index = GetTileIndex(x, y);

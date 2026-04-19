@@ -34,7 +34,7 @@ namespace HackThePlanet.Components
 
         public override void Draw(GameTime gameTime)
         {
-            if (Texture == null) return;
+            if (Texture == null || !Enabled) return;
 
             HtpGame.SpriteBatch.Draw(Texture, Position, SrcRect, Color, 0f,
                 Vector2.Zero, Scale, SpriteEffects.None, SortOrder);

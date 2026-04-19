@@ -2,8 +2,8 @@
 {
     internal interface IUnit
     {
-        int TileIndex { get; }
-        bool HasActed { get; }
+        int TileIndex { get; set; }
+        bool HasActed { get; set; }
         bool IsGhost { get; }
         UnitType Type { get; }
     }

@@ -35,3 +35,7 @@ I have some gameplay! The players can take turns to place items on the grid. The
 ## 2026-04-19 10:20 Not gonna make it..?
 
 This might be tight, I have five hours left to finish the jam. Maybe some time on Monday? Maybe even a couple of hours tonight? Jams always happen on weekends where plans materialize. It is what it is I guess. Just finished adding the ghosts and hiding them from the other player when it's their screen. The graphics need work, but they will do for now. 
+
+## 2026-04-19 11:01 Movement is working!
+
+Selection and movement works great! The players can now move their pieces on the board using a simple selection mechanic. Select the unit, cursor becomes a yellow square to show where you can move to. I might change that to arrows or something later. Polish stage, if I can get to it. 
