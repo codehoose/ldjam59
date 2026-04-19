@@ -4,6 +4,7 @@
     {
         int TileIndex { get; }
         bool HasActed { get; }
+        bool IsGhost { get; }
         UnitType Type { get; }
     }
 }

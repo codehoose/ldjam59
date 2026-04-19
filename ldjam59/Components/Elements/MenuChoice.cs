@@ -4,6 +4,8 @@
     {
         DeployCrawler,
         DeployDrone,
+        DeployCrawlerGhost,
+        DeployDroneGhost,
         EndSequence
     }
 }

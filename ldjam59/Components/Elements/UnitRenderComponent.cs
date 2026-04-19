@@ -7,7 +7,10 @@ namespace HackThePlanet.Components.Elements
     internal class UnitRenderComponent : HtpDrawableComponent
     {
         private IUnit _unit;
+        private Texture2D _ghostTexture;
         private int _lastIndex = -1;
+
+        public bool IsGhost { get; set; }
 
         public void Init()
         {
@@ -28,6 +31,17 @@ namespace HackThePlanet.Components.Elements
         public UnitRenderComponent(HackThePlanetGame game, IUnit unit, Texture2D texture) : base(game, texture, Layer.Units)
         {
             _unit = unit;
+            _ghostTexture = game.Ghost;
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            if (IsGhost)
+            {
+                HtpGame.SpriteBatch.Draw(_ghostTexture, Position, SrcRect, Color, 0f,
+                    Vector2.Zero, Scale, SpriteEffects.None, Layer.UnitIsGhost);
+            }
         }
     }
 }

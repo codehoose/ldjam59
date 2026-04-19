@@ -31,3 +31,7 @@ Slowly getting there. I am fixating on the smaller details and just need to hamm
 I have some gameplay! The players can take turns to place items on the grid. There are currently two "AIs" that control various programs; a crawler and a drone for now. And those can be placed on the grid near the AI. There are a limited number of cycles (think: mana) so you have to watch that resource too. Next up is movement and starting processes (think: spells!) All good stuff.
 
 ![Things are starting to come together!](.images/some-gameplay.png "Finally, some gameplay!")
+
+## 2026-04-19 10:20 Not gonna make it..?
+
+This might be tight, I have five hours left to finish the jam. Maybe some time on Monday? Maybe even a couple of hours tonight? Jams always happen on weekends where plans materialize. It is what it is I guess. Just finished adding the ghosts and hiding them from the other player when it's their screen. The graphics need work, but they will do for now. 

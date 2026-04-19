@@ -45,10 +45,22 @@ namespace HackThePlanet.FSM.Gameplay
             {
                 case MenuChoice.DeployDrone:
                     GameState.UnitToDeploy = UnitType.Drone;
+                    GameState.UnitToDeployIsGhost = false;
                     StateManager.ChangeState(DeployUnitState.Instance);
                     break;
                 case MenuChoice.DeployCrawler:
                     GameState.UnitToDeploy = UnitType.Crawler;
+                    GameState.UnitToDeployIsGhost = false;
+                    StateManager.ChangeState(DeployUnitState.Instance);
+                    break;
+                case MenuChoice.DeployDroneGhost:
+                    GameState.UnitToDeploy = UnitType.Drone;
+                    GameState.UnitToDeployIsGhost = true;
+                    StateManager.ChangeState(DeployUnitState.Instance);
+                    break;
+                case MenuChoice.DeployCrawlerGhost:
+                    GameState.UnitToDeploy = UnitType.Crawler;
+                    GameState.UnitToDeployIsGhost = true;
                     StateManager.ChangeState(DeployUnitState.Instance);
                     break;
                 case MenuChoice.EndSequence:

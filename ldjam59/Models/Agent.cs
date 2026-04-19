@@ -9,6 +9,7 @@
         public int TileIndex { get; set; }
         public bool IsAlive { get; set; } = true;
         public bool HasActed { get; set; }
+        public bool IsGhost => false;
         public UnitType Type { get; } = UnitType.None;
 
         public Agent(Player owner, int tileIndex)

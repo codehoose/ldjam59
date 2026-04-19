@@ -40,6 +40,12 @@ namespace HackThePlanet.Models
             _cycles = DEFAULT_CYCLES;
         }
 
+        internal List<IUnit> GetAgentUnits()
+        {
+            var agent = _currentPlayer.Agent;
+            return _board.GetAllUnits().Select(u => u as Unit).Where(u => u != null && u.Agent == agent)
+                .Select(u => (IUnit)u).ToList();
+        }
 
         internal bool DeployUnit(int x, int y)
         {
@@ -51,7 +57,7 @@ namespace HackThePlanet.Models
             var unitAdded = _board.AddUnit(_currentPlayer, UnitToDeploy, x, y, UnitToDeployIsGhost);
             if (unitAdded != null)
             {
-                _cycles -= (UnitToDeploy == UnitType.Crawler ? 1 : 2);
+                _cycles -= UnitToDeployIsGhost || UnitToDeploy == UnitType.Crawler ? 1 : 2;
                 UnitToDeploy = UnitType.None;
             }
 

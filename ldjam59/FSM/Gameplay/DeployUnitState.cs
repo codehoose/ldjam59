@@ -68,7 +68,7 @@ namespace HackThePlanet.FSM.Gameplay
             if (_cancel==null)
             {
                 var pos = new Vector2(750 - 380 / 2, 400);
-                _cancel = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "End Deploy", 380, 4)
+                _cancel = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "Cancel", 380, 4)
                 {
                     Position = pos
                 };

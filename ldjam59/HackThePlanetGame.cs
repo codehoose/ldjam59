@@ -24,6 +24,7 @@ namespace HackThePlanet
         public Texture2D BlackHat { get; private set; }
         public Texture2D Crawler { get; private set; }
         public Texture2D Drone { get; private set; }
+        public Texture2D Ghost { get; private set; }
 
         public HackThePlanetGame()
         {
@@ -55,7 +56,8 @@ namespace HackThePlanet
             WhiteHat = Content.Load<Texture2D>("ai-white");
             BlackHat = Content.Load<Texture2D>("ai-black");
             Crawler = Content.Load<Texture2D>("crawler");
-            Drone = Content.Load<Texture2D>("crawler");
+            Drone = Content.Load<Texture2D>("drone");
+            Ghost = Content.Load<Texture2D>("incognito");
         }
 
         protected override void Update(GameTime gameTime)
