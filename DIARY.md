@@ -61,3 +61,13 @@ Here's some in-game action.
 Everything works! The only functional things not implemented are the thread scan and the game over condition. But I think that'll be straight forward enough. The game over will be next. Then after that, polish? Music? Sound effects?
 
 I didn't mention in the last entry but I thought I'd call the game "Hack the Planet!" because it's a great movie and the game has hackers, AI, grids (Tron anyone) and I immediately thought of Crash Override and Acid Burn.
+
+## 2026-04-19 19:13 Back from dinner and functionally it's a wrap
+
+The game is functionally done at this point! I still have a lot of polish items to do, but functionally everything is there. There's movement! There's attacks! There are other attacks! There are game over conditions! The only thing functionally missing is a "process scan" feature. I'll implement that tonight, should be relatively easy.
+
+What I've learned so far:
+
+- Plan Plan Plan. You can't plan enough for the jam. It's not about getting your tech or workspace ready, it's about coming up with a couple of game style ideas and planning out how you could fit them into a theme
+- Get the base functionality in first. Don't worry about looks, it's all about getting from screen to screen and the flow of the game. Concentrate on the core loop and build it piece by piece. Talking of which...
+- Using a single game state to hold the current state of the game and a Finite State Machine was an amazing help. It's so easy to test just one bit of the core loop. I also created "core loop" states that always showed various bits and pieces like how many cycles were left, who the current player is etc.

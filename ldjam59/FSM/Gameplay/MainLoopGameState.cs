@@ -32,8 +32,8 @@ namespace HackThePlanet.FSM.Gameplay
 
             foreach (var u in Game.State.GetUnits())
             {
-                var tex = u.Type == UnitType.Crawler ? Game.Crawler : Game.Drone;
-                var unit = new UnitRenderComponent(Game, u, tex)
+                var isWhiteHat = GameState.GetIsWhiteHat(u);
+                var unit = new UnitRenderComponent(Game, u, Game.Units, isWhiteHat)
                 {
                     IsGhost = u.IsGhost && playerUnits.Contains(u)
                 };
@@ -46,7 +46,7 @@ namespace HackThePlanet.FSM.Gameplay
             var index = 0;
             foreach (var a in Game.State.GetAgents())
             {
-                var agentComponent = new UnitRenderComponent(Game, a, textures[index++]);
+                var agentComponent = new UnitRenderComponent(Game, a, textures[index++], false);
                 _agents.Add(agentComponent);
             }
 

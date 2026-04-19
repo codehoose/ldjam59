@@ -69,7 +69,7 @@ namespace HackThePlanet.Components.Elements
                 _deployCrawler.Disabled = HtpGame.State.Cycles < 1;
                 _deployCrawlerGhost.Disabled = HtpGame.State.Cycles < 1;
                 _deployDrone.Disabled = HtpGame.State.Cycles < 2;
-                _deployDrone.Disabled = HtpGame.State.Cycles < 1;
+                _deployDroneGhost.Disabled = HtpGame.State.Cycles < 1;
                 _cycles = HtpGame.State.Cycles;
             }
         }

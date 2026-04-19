@@ -6,7 +6,7 @@ using System;
 
 namespace HackThePlanet.FSM.Gameplay
 {
-    internal class HandoffScreenState : BaseState<HandoffScreenState>
+    internal class GameOverState : BaseState<GameOverState>
     {
         private ButtonComponent _button;
         private HtpDrawableComponent _hackerman;
@@ -32,18 +32,21 @@ namespace HackThePlanet.FSM.Gameplay
                 _hackerman = new HtpDrawableComponent(Game, Game.Hackerman, Layer.Background);
             }
 
-            _hackerman.Color = Game.State.CurrentPlayerIndex == 0 ? Color.White : Color.Orange;
-            _hackerman.Effects = Game.State.CurrentPlayerIndex != 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            var (index, winningPlayer) = GameState.GetWinningPlayer();
+            var firstPlayerWon = index == 0;
+
+            _hackerman.Color = firstPlayerWon ? Color.White : Color.Orange;
+            _hackerman.Effects = !firstPlayerWon ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             _hackerman.Scale = 2;
 
-            _button.Text = $"Your turn P<{stateManager.Game.State.CurrentPlayerIndex}> {stateManager.Game.State.CurrentPlayer.Name}";
+            _button.Text = $"Congrats, {stateManager.Game.State.CurrentPlayer.Name}! You Won!";
             AddComponent(_hackerman);
             AddComponent(_button);
         }
 
         private void Button_Click(object sender, EventArgs e)
         {
-            StateManager.ChangeState(SummonState.Instance);
+            StateManager.ChangeState(TitleScreenState.Instance);
         }
     }
 }

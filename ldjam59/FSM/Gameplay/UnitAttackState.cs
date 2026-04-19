@@ -141,6 +141,7 @@ namespace HackThePlanet.FSM.Gameplay
                     break;
                 case AttackState.Attack:
                     var defender = Game.State.GetUnitAt(x, y);
+                    if (defender == null) return;
                     if (_units.Contains(defender))
                     {
                         // It's one of ours!
@@ -155,6 +156,15 @@ namespace HackThePlanet.FSM.Gameplay
                         _selection.Enabled = false;
                         _selectedUnit = null;
                         state = AttackState.Select;
+
+                        if (defender is Agent agent)
+                        {
+                            if (!agent.IsAlive)
+                            {
+
+                                StateManager.ChangeState(GameOverState.Instance);
+                            }
+                        }
                     }
                     break;
             }

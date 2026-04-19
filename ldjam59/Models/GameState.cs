@@ -39,6 +39,7 @@ namespace HackThePlanet.Models
         internal void KillProcess(IUnit defender)
         {
             _board.RemoveUnit(defender);
+            if (defender is Agent agent) agent.IsAlive = false;
             _cycles -= 2;
         }
 
@@ -101,6 +102,23 @@ namespace HackThePlanet.Models
             }
 
             return result;
+        }
+
+        internal (int, Player) GetWinningPlayer()
+        {
+            var player = _players[0].Agent.IsAlive ? _players[0] : _players[0];
+            var index = _players[0].Agent.IsAlive ? 0 : 1;
+            return (index, player);
+        }
+
+        internal bool GetIsWhiteHat(IUnit unit)
+        {
+            var whiteHatAgent = _players[0].Agent;
+            var exists = _board.GetAllUnits()
+                               .Select(u => u as Unit)
+                               .Where(u => u != null && u == unit && u.Agent == whiteHatAgent)
+                               .Any();
+            return exists;
         }
     }
 }

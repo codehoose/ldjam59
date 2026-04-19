@@ -27,6 +27,7 @@ namespace HackThePlanet.FSM.Gameplay
         private MoveState state;
         private List<IUnit> _units;
         private IUnit _selectedUnit;
+        private List<int> _acceptablePositions;
 
         public override void Enter(StateManager stateManager)
         {
@@ -94,10 +95,10 @@ namespace HackThePlanet.FSM.Gameplay
 
             if (state == MoveState.Move && _selectedUnit != null)
             {
-                var acceptablePositions = GameState.GetFreeSquaresAround(_selectedUnit);
+                _acceptablePositions = GameState.GetFreeSquaresAround(_selectedUnit);
                 var index = GameState.GetTileIndex(x, y);
                 _cursor.Enabled = true;
-                _cursor.Color = (acceptablePositions.Contains(index) ? Color.Yellow : Color.Transparent) * .5f;
+                _cursor.Color = (_acceptablePositions.Contains(index) ? Color.Yellow : Color.Transparent) * .5f;
             }
 
             _cursor.Position = new Vector2(x, y) * 54;
@@ -154,7 +155,12 @@ namespace HackThePlanet.FSM.Gameplay
                     }
                     else
                     {
-                        Game.State.MoveUnit(_selectedUnit, x, y);
+                        if (!_acceptablePositions.Contains(GameState.GetTileIndex(x,y)))
+                        {
+                            return;
+                        }
+
+                        GameState.MoveUnit(_selectedUnit, x, y);
                         _selectedUnit.HasActed = true;
                         _selectedUnit = null;
                         _selection.Enabled = false;

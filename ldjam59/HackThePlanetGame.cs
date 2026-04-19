@@ -22,9 +22,8 @@ namespace HackThePlanet
         public SpriteFont Font { get; private set; }
         public Texture2D WhiteHat { get; private set; }
         public Texture2D BlackHat { get; private set; }
-        public Texture2D Crawler { get; private set; }
-        public Texture2D Drone { get; private set; }
         public Texture2D Ghost { get; private set; }
+        public Texture2D Units { get; private set; }
         public Texture2D SelectionCursor { get; private set; }
         public Texture2D Hackerman { get; private set; }
         public Texture2D HackermanSide { get; private set; }
@@ -54,8 +53,7 @@ namespace HackThePlanet
             Font = Content.Load<SpriteFont>("tempfont");
             WhiteHat = Content.Load<Texture2D>("ai-white");
             BlackHat = Content.Load<Texture2D>("ai-black");
-            Crawler = Content.Load<Texture2D>("crawler");
-            Drone = Content.Load<Texture2D>("drone");
+            Units = Content.Load<Texture2D>("units");
             Ghost = Content.Load<Texture2D>("incognito");
             SelectionCursor = Content.Load<Texture2D>("selection");
             Hackerman = Content.Load<Texture2D>("hackerman");
