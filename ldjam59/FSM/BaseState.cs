@@ -62,5 +62,16 @@ namespace HackThePlanet.FSM
                 parent.AddComponents();
             }
         }
+
+        protected void RemoveComponent(GameComponent component)
+        {
+            HackThePlanetGame.Instance.Components.Remove(component);
+            _components.Remove(component);
+
+            if (component is IParentComponent parent)
+            {
+                parent.RemoveComponents();
+            }
+        }
     }
 }

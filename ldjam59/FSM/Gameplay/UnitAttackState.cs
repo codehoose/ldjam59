@@ -9,22 +9,20 @@ using System.Collections.Generic;
 
 namespace HackThePlanet.FSM.Gameplay
 {
-    internal class MoveUnitsState : MainLoopGameState<MoveUnitsState>
+    internal class UnitAttackState : MainLoopGameState<UnitAttackState>
     {
-        enum MoveState
+        enum AttackState
         {
             Select,
-            Move
+            Attack
         }
 
         private HighlightCursorComponent _cursor;
         private CursorComponent _selection;
         private ButtonState _previousButtonState;
-        private ButtonComponent _endMove;
+        private ButtonComponent _endAttack;
         private bool _pressedInside;
-        private int _x;
-        private int _y;
-        private MoveState state;
+        private AttackState state;
         private List<IUnit> _units;
         private IUnit _selectedUnit;
 
@@ -35,12 +33,12 @@ namespace HackThePlanet.FSM.Gameplay
             _units = Game.State.GetPlayerUnits();
             foreach (var unit in _units) unit.HasActed = false;
 
-            state = MoveState.Select;
+            state = AttackState.Select;
 
-            if (_endMove == null)
+            if (_endAttack == null)
             {
                 var pos = new Vector2(750 - 380 / 2, 400);
-                _endMove = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "End Move", 380, 4)
+                _endAttack = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "End Attack", 380, 4)
                 {
                     Position = pos
                 };
@@ -60,17 +58,17 @@ namespace HackThePlanet.FSM.Gameplay
                 };
             }
 
-            _endMove.OnClick += EndMove_Clicked;
+            _endAttack.OnClick += EndMove_Clicked;
             _selection.Enabled = false;
 
             AddComponent(_cursor);
             AddComponent(_selection);
-            AddComponent(_endMove);
+            AddComponent(_endAttack);
         }
 
         public override void Exit(StateManager stateManager)
         {
-            _endMove.OnClick -= EndMove_Clicked;
+            _endAttack.OnClick -= EndMove_Clicked;
             base.Exit(stateManager);
         }
 
@@ -92,9 +90,9 @@ namespace HackThePlanet.FSM.Gameplay
             var x = (int)normalizedPos.X;
             var y = (int)normalizedPos.Y;
 
-            if (state == MoveState.Move && _selectedUnit != null)
+            if (state == AttackState.Attack && _selectedUnit != null)
             {
-                var acceptablePositions = GameState.GetFreeSquaresAround(_selectedUnit);
+                var acceptablePositions = GameState.GetAttackTargetsAround(_selectedUnit);
                 var index = GameState.GetTileIndex(x, y);
                 _cursor.Enabled = true;
                 _cursor.Color = (acceptablePositions.Contains(index) ? Color.Yellow : Color.Transparent) * .5f;
@@ -109,8 +107,6 @@ namespace HackThePlanet.FSM.Gameplay
             if (!wasPressed && isPressed)
             {
                 _pressedInside = mouseContained;
-                _x = x;
-                _y = y;
             }
 
             if (wasPressed && !isPressed)
@@ -118,7 +114,7 @@ namespace HackThePlanet.FSM.Gameplay
                 if (_pressedInside && mouseContained)
                 {
                     _previousButtonState = ButtonState.Released;
-                    DoClick(_x, _y);
+                    DoClick(x, y);
                 }
 
                 _pressedInside = false;
@@ -130,9 +126,9 @@ namespace HackThePlanet.FSM.Gameplay
 
         private void DoClick(int x, int y)
         {
-            switch( state)
+            switch (state)
             {
-                case MoveState.Select:
+                case AttackState.Select:
                     var unit = Game.State.GetUnitAt(x, y);
                     if (_units.Contains(unit) && !unit.HasActed)
                     {
@@ -140,25 +136,25 @@ namespace HackThePlanet.FSM.Gameplay
                         _selection.Enabled = true;
                         _selectedUnit = unit;
                         _selection.Position = new Vector2(x, y) * 54f;
-                        state = MoveState.Move;
+                        state = AttackState.Attack;
                     }
                     break;
-                case MoveState.Move:
-                    var unitAlt = Game.State.GetUnitAt(x, y);
-                    if (_units.Contains(unitAlt))
+                case AttackState.Attack:
+                    var defender = Game.State.GetUnitAt(x, y);
+                    if (_units.Contains(defender))
                     {
-                        // Set up selection cursor
+                        // It's one of ours!
                         _selection.Enabled = true;
-                        _selectedUnit = unitAlt;
+                        _selectedUnit = defender;
                         _selection.Position = new Vector2(x, y) * 54f;
                     }
                     else
                     {
-                        Game.State.MoveUnit(_selectedUnit, x, y);
-                        _selectedUnit.HasActed = true;
-                        _selectedUnit = null;
+                        Game.State.DestroyUnit(defender);
+                        RemoveUnit(defender); // Remove from renderer
                         _selection.Enabled = false;
-                        state = MoveState.Select;
+                        _selectedUnit = null;
+                        state = AttackState.Select;
                     }
                     break;
             }
@@ -166,7 +162,7 @@ namespace HackThePlanet.FSM.Gameplay
 
         private void EndMove_Clicked(object sender, EventArgs e)
         {
-            StateManager.ChangeState(UnitAttackState.Instance);
+            StateManager.ChangeState(EndPlayerTurnState.Instance);
         }
     }
 }

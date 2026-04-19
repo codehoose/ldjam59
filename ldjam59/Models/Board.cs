@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpDX.Direct3D9;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -82,6 +83,44 @@ namespace HackThePlanet.Models
             var cy = Math.Clamp(y, 0, HEIGHT - 1);
 
             return cy * WIDTH + cx;
+        }
+
+        internal void RemoveUnit(IUnit unit)
+        {
+            _board[unit.TileIndex] = null;
+        }
+
+        internal List<int> GetAttackTargetsAround(IUnit unit)
+        {
+            // Couple of things here.
+            // Drones can see 2 squares around them, BUT! They can only fire if they have line of sight
+            // AI can't attack AI
+
+            // Let's get the list of units first and then we can cull them...
+            var sight = unit.Type == UnitType.Drone ? 2 : 1;
+
+            // Are we another AI?
+            var isAi = unit is Agent;
+
+            var list = new List<int>();
+            var (ax, ay) = GetAgentGridPosition(unit);
+
+            for (var y = ay - sight; y <= ay + sight; y++)
+            {
+                for (var x = ax - sight; x <= ax + sight; x++)
+                {
+                    var index = GetTileIndex(x, y);
+                    if (IsOccupied(index) && unit.TileIndex != index)
+                    {
+                        if (_board[index] is Unit || (_board[index] is Agent && !isAi))
+                        {
+                            list.Add(index);
+                        }
+                    }
+                }
+            }
+
+            return list;
         }
     }
 }

@@ -39,3 +39,7 @@ This might be tight, I have five hours left to finish the jam. Maybe some time o
 ## 2026-04-19 11:01 Movement is working!
 
 Selection and movement works great! The players can now move their pieces on the board using a simple selection mechanic. Select the unit, cursor becomes a yellow square to show where you can move to. I might change that to arrows or something later. Polish stage, if I can get to it. 
+
+## 2026-04-19 12:12 Attack! Attack! Arrrgh! Attack!
+
+Attacking units is working. I've forgotten about running programs. D'oh! That's next, it'll use the same selector thing as before. I should probably work on the interstitial screens too. They look naff. But, for now I've fixed the bugs with movement - you could move a bit further just by flicking the mouse, so it's constrained to when you _first_ clicked. OK, onwards an upwards. Interstitial screen first. Then work on programs. Kill process and threat scan.

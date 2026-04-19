@@ -11,6 +11,7 @@ namespace HackThePlanet.Components.Elements
         private int _lastIndex = -1;
 
         public bool IsGhost { get; set; }
+        public IUnit Unit => _unit;
 
         public void Init()
         {
