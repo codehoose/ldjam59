@@ -55,3 +55,9 @@ The title screen and side images are in and it's feeling like the end is in sigh
 Here's some in-game action.
 
 ![In-game sequence showing the state after a couple of moves](.images/gameplay-action.png "Gameplay")
+
+## 2026-04-19 14:25 The main loop is almost complete
+
+Everything works! The only functional things not implemented are the thread scan and the game over condition. But I think that'll be straight forward enough. The game over will be next. Then after that, polish? Music? Sound effects?
+
+I didn't mention in the last entry but I thought I'd call the game "Hack the Planet!" because it's a great movie and the game has hackers, AI, grids (Tron anyone) and I immediately thought of Crash Override and Acid Burn.

@@ -6,6 +6,8 @@
         DeployDrone,
         DeployCrawlerGhost,
         DeployDroneGhost,
-        EndSequence
+        EndSequence,
+        KillProcess,
+        ThreatScan
     }
 }

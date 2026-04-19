@@ -122,5 +122,12 @@ namespace HackThePlanet.Models
 
             return list;
         }
+
+        internal List<int> GetOpponentTargets(Agent agent) =>
+            _board.Where(u => u is not null and not Agent)
+                  .Select(u => (Unit)u)
+                  .Where(u => u.Agent != agent)
+                  .Select(u => u.TileIndex)
+                  .ToList();
     }
 }

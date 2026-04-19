@@ -150,7 +150,7 @@ namespace HackThePlanet.FSM.Gameplay
                     }
                     else
                     {
-                        Game.State.DestroyUnit(defender);
+                        Game.State.KillProcess(defender);
                         RemoveUnit(defender); // Remove from renderer
                         _selection.Enabled = false;
                         _selectedUnit = null;
@@ -162,7 +162,7 @@ namespace HackThePlanet.FSM.Gameplay
 
         private void EndMove_Clicked(object sender, EventArgs e)
         {
-            StateManager.ChangeState(EndPlayerTurnState.Instance);
+            StateManager.ChangeState(RunProgramState.Instance);
         }
     }
 }

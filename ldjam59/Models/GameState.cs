@@ -30,12 +30,17 @@ namespace HackThePlanet.Models
         public (int, int) GetAgentGridPosition(IUnit agent) => _board.GetAgentGridPosition(agent);
         public List<int> GetFreeSquaresAround(IUnit agent) => _board.GetFreeSquaresAround(agent);
         public List<int> GetAttackTargetsAround(IUnit agent) => _board.GetAttackTargetsAround(agent);
+        public List<int> GetOpponentTargets(Agent agent) => _board.GetOpponentTargets(agent);
         public int GetTileIndex(int x, int y) => _board.GetTileIndex(x, y);
         public bool IsOccupied(int x, int y) => _board.IsOccupied(x, y);
         internal IUnit GetUnitAt(int x, int y) => _board.GetUnitAt(x, y);
         internal void MoveUnit(IUnit unit, int x, int y) => _board.MoveUnit(unit, x, y);
 
-        internal void DestroyUnit(IUnit defender) => _board.RemoveUnit(defender);
+        internal void KillProcess(IUnit defender)
+        {
+            _board.RemoveUnit(defender);
+            _cycles -= 2;
+        }
 
         public void Init()
         {
