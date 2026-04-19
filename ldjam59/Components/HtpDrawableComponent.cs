@@ -22,6 +22,8 @@ namespace HackThePlanet.Components
 
         internal Rectangle SrcRect { get; set; }
 
+        internal SpriteEffects Effects { get; set; } = SpriteEffects.None;
+
         HackThePlanetGame IHtpComponent.HtpGame => HtpGame;
 
         public HtpDrawableComponent(HackThePlanetGame game, Texture2D texture, float sortOrder) : base(game)
@@ -37,7 +39,7 @@ namespace HackThePlanet.Components
             if (Texture == null || !Enabled) return;
 
             HtpGame.SpriteBatch.Draw(Texture, Position, SrcRect, Color, 0f,
-                Vector2.Zero, Scale, SpriteEffects.None, SortOrder);
+                Vector2.Zero, Scale, Effects, SortOrder);
         }
     }
 }

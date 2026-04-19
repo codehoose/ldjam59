@@ -1,6 +1,8 @@
-﻿using HackThePlanet.Components.Elements;
+﻿using HackThePlanet.Components;
+using HackThePlanet.Components.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1.Effects;
 using System;
 
 namespace HackThePlanet.FSM.Gameplay
@@ -8,16 +10,15 @@ namespace HackThePlanet.FSM.Gameplay
     internal class HandoffScreenState : BaseState<HandoffScreenState>
     {
         private ButtonComponent _button;
+        private HtpDrawableComponent _hackerman;
 
         public override void Enter(StateManager stateManager)
         {
             base.Enter(stateManager);
 
-
-            var pos = new Vector2(Game.GraphicsDevice.Viewport.Width - 256, Game.GraphicsDevice.Viewport.Height - 32) / 2f;
-
             if (_button == null)
             {
+                var pos = new Vector2(Game.GraphicsDevice.Viewport.Width - 256, Game.GraphicsDevice.Viewport.Height - 32) / 2f;
                 _button = new ButtonComponent(Game,
                     Content.Load<Texture2D>("button"),
                     "",
@@ -29,9 +30,15 @@ namespace HackThePlanet.FSM.Gameplay
 
                 _button.OnClick += Button_Click;
 
+                _hackerman = new HtpDrawableComponent(Game, Game.Hackerman, Layer.Background);
             }
 
+            _hackerman.Color = Game.State.CurrentPlayerIndex == 0 ? Color.White : Color.Orange;
+            _hackerman.Effects = Game.State.CurrentPlayerIndex != 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            _hackerman.Scale = 2;
+
             _button.Text = $"Your turn P<{stateManager.Game.State.CurrentPlayerIndex}> {stateManager.Game.State.CurrentPlayer.Name}";
+            AddComponent(_hackerman);
             AddComponent(_button);
         }
 

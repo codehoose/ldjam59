@@ -1,6 +1,7 @@
 ﻿using HackThePlanet.Components;
 using HackThePlanet.Components.Elements;
 using HackThePlanet.Models;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
@@ -13,6 +14,7 @@ namespace HackThePlanet.FSM.Gameplay
     internal class MainLoopGameState<T> : BaseState<T> where T: IState
     {
         private BackgroundGridComponent _grid;
+        private HtpDrawableComponent _hackerman;
         private GameStateComponent _gameState;
         private List<UnitRenderComponent> _agents = [];
         private List<UnitRenderComponent> _units = [];
@@ -48,8 +50,13 @@ namespace HackThePlanet.FSM.Gameplay
                 _agents.Add(agentComponent);
             }
 
+            _hackerman.Color = Game.State.CurrentPlayerIndex == 0 ? Color.White : Color.Orange;
+            _hackerman.Effects = Game.State.CurrentPlayerIndex != 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            _hackerman.Scale = 2;
+
             AddComponent(_grid);
             AddComponent(_gameState);
+            AddComponent(_hackerman);
             foreach (var agent in _agents)
             {
                 agent.Init();
@@ -88,6 +95,10 @@ namespace HackThePlanet.FSM.Gameplay
         {
             _grid = new BackgroundGridComponent(Game, Content.Load<Texture2D>("block"));
             _gameState = new GameStateComponent(Game);
+            _hackerman = new HtpDrawableComponent(Game, Game.HackermanSide, Layer.Background)
+            {
+                Position = new Vector2(540, 0)
+            };
         }
     }
 }

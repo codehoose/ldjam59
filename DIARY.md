@@ -43,3 +43,15 @@ Selection and movement works great! The players can now move their pieces on the
 ## 2026-04-19 12:12 Attack! Attack! Arrrgh! Attack!
 
 Attacking units is working. I've forgotten about running programs. D'oh! That's next, it'll use the same selector thing as before. I should probably work on the interstitial screens too. They look naff. But, for now I've fixed the bugs with movement - you could move a bit further just by flicking the mouse, so it's constrained to when you _first_ clicked. OK, onwards an upwards. Interstitial screen first. Then work on programs. Kill process and threat scan.
+
+## 2026-04-19 12:34 Hackerman
+
+Added a hacker image from [Pixabay](https://pixabay.com/photos/hacker-safety-computer-the-internet-8003394/) to add some spice to the visuals. Makes it a little less boring and now you can see which player is playing. Blue for the white hat hacker, slightly orange for the black hat hacker. I got a font (PixelGrunge) from [dafont.com](https://dafont.com) for the logo.
+
+The title screen and side images are in and it's feeling like the end is in sight. I still need to do a _lot_ of polish and finish off the program run stage too.
+
+![Title screen showing hacker man and menu options](.images/title.png "Title screen")
+
+Here's some in-game action.
+
+![In-game sequence showing the state after a couple of moves](.images/gameplay-action.png "Gameplay")
