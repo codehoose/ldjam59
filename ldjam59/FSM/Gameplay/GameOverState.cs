@@ -44,6 +44,12 @@ namespace HackThePlanet.FSM.Gameplay
             AddComponent(_button);
         }
 
+        public override void Exit(StateManager stateManager)
+        {
+            _button.OnClick -= Button_Click;
+            base.Exit(stateManager);
+        }
+
         private void Button_Click(object sender, EventArgs e)
         {
             StateManager.ChangeState(TitleScreenState.Instance);

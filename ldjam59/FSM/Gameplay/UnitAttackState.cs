@@ -130,6 +130,7 @@ namespace HackThePlanet.FSM.Gameplay
             {
                 case AttackState.Select:
                     var unit = Game.State.GetUnitAt(x, y);
+                    if (unit.IsGhost) return; // Ghosts can't attack
                     if (_units.Contains(unit) && !unit.HasActed)
                     {
                         // Set up selection cursor
