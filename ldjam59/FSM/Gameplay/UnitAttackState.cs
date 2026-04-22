@@ -25,6 +25,8 @@ namespace HackThePlanet.FSM.Gameplay
         private AttackState state;
         private List<IUnit> _units;
         private IUnit _selectedUnit;
+        private int _x;
+        private int _y;
 
         public override void Enter(StateManager stateManager)
         {
@@ -107,6 +109,8 @@ namespace HackThePlanet.FSM.Gameplay
             if (!wasPressed && isPressed)
             {
                 _pressedInside = mouseContained;
+                _x = x;
+                _y = y;
             }
 
             if (wasPressed && !isPressed)
@@ -114,7 +118,7 @@ namespace HackThePlanet.FSM.Gameplay
                 if (_pressedInside && mouseContained)
                 {
                     _previousButtonState = ButtonState.Released;
-                    DoClick(x, y);
+                    DoClick(_x, _y);
                 }
 
                 _pressedInside = false;
