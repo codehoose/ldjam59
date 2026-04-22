@@ -8,12 +8,16 @@ namespace HackThePlanet.Models
     {
         internal static int DEFAULT_CYCLES = 4;
 
+        private static GameState _instance;
+
         private readonly Board _board = new Board();
         private readonly Player[] _players = new Player[2];
         private Player _currentPlayer;
         private Player _winner;
         private int _current;
         private int _cycles;
+
+        public static GameState Instance => _instance;
 
         public Player CurrentPlayer => _currentPlayer;
         public int CurrentPlayerIndex => _current;
@@ -22,7 +26,10 @@ namespace HackThePlanet.Models
         public UnitType UnitToDeploy { get; set; } = UnitType.None;
         public bool UnitToDeployIsGhost { get; set; }
 
-        private IUnit[] Units => _board.GetAllUnits();
+        public GameState()
+        {
+            _instance = this;
+        }
 
         public IEnumerable<Agent> GetAgents() => _players.Select(p => p.Agent);
         public IEnumerable<IUnit> GetUnits() => _board.GetAllUnits();
@@ -67,21 +74,11 @@ namespace HackThePlanet.Models
                 .Select(u => (IUnit)u).ToList();
         }
 
-        internal bool DeployUnit(int x, int y)
+        internal IUnit DeployUnit(int x, int y, bool isGhost, UnitType type)
         {
-            if (UnitToDeploy == UnitType.None)
-            {
-                return false;
-            }
-
-            var unitAdded = _board.AddUnit(_currentPlayer, UnitToDeploy, x, y, UnitToDeployIsGhost);
-            if (unitAdded != null)
-            {
-                _cycles -= UnitToDeployIsGhost || UnitToDeploy == UnitType.Crawler ? 1 : 2;
-                UnitToDeploy = UnitType.None;
-            }
-
-            return unitAdded != null;
+            var unit = _board.AddUnit(_currentPlayer, UnitToDeploy, x, y, UnitToDeployIsGhost);
+            _cycles -= isGhost || type == UnitType.Crawler ? 1 : 2;
+            return unit;
         }
 
         public EndTurnCondition EndCurrentPlayerTurn()
@@ -120,5 +117,7 @@ namespace HackThePlanet.Models
                                .Any();
             return exists;
         }
+
+        internal void RemoveUnit(IUnit unit) => _board.RemoveUnit(unit);
     }
 }

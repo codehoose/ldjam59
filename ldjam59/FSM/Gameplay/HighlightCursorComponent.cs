@@ -8,7 +8,6 @@ namespace HackThePlanet.FSM.Gameplay
     {
         public int Width { get; set; }
         public int Height { get; set; }
-        public bool Contained { get; set; }
 
         public HighlightCursorComponent(HackThePlanetGame game, Texture2D texture, float sortOrder) : base(game, texture, sortOrder)
         {
@@ -16,7 +15,7 @@ namespace HackThePlanet.FSM.Gameplay
 
         public override void Draw(GameTime gameTime)
         {
-            if (Texture == null || !Contained) return;
+            if (Texture == null || !Enabled) return;
 
             HtpGame.SpriteBatch.Draw(Texture, new Rectangle((int)Position.X, (int)Position.Y, Width, Height), null, Color, 0f, Vector2.Zero, SpriteEffects.None, SortOrder);
         }

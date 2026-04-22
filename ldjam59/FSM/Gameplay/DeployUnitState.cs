@@ -1,69 +1,42 @@
-﻿using HackThePlanet.Components;
+﻿using HackThePlanet.Commands;
+using HackThePlanet.Commands.Gameplay;
+using HackThePlanet.Components;
 using HackThePlanet.Components.Elements;
+using HackThePlanet.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace HackThePlanet.FSM.Gameplay
 {
     internal class DeployUnitState : MainLoopGameState<DeployUnitState>
     {
+        private MouseClickState _mouse;
         private ButtonComponent _cancel;
         private HighlightCursorComponent _cursor;
-        private ButtonState _previousButtonState;
-        private bool _pressedInside;
 
         public override void Tick(float deltaTime)
         {
             base.Tick(deltaTime);
-            var mouseState = Mouse.GetState();
-            var gridPos = new Vector2(mouseState.X, mouseState.Y);
-            if (!new Rectangle(0, 0, 540, 540).Contains(gridPos))
-            {
-                _cursor.Contained = false;
-                _cursor.Enabled = false;
-                return;
-            }
+            _mouse.Tick(deltaTime);
 
-            _cursor.Contained = true;
-            var normalizedPos = gridPos / 54; // each square is 54 pixels!!
+            var normalizedPos = _mouse.Position / 54; // each square is 54 pixels!!
             var x = (int)normalizedPos.X;
             var y = (int)normalizedPos.Y;
 
             var acceptablePositions = GameState.GetFreeSquaresAround(GameState.CurrentPlayer.Agent);
             var index = GameState.GetTileIndex(x, y);
-            _cursor.Enabled = true;
+            _cursor.Enabled = _mouse.Contained;
             _cursor.Color = (acceptablePositions.Contains(index) ? Color.Green : Color.Red) * .5f;
             _cursor.Position = new Vector2(x, y) * 54;
-
-            var mouseContained = _cursor.Contained;
-            var isPressed = mouseState.LeftButton == ButtonState.Pressed;
-            var wasPressed = _previousButtonState == ButtonState.Pressed;
-
-            if (!wasPressed && isPressed)
-            {
-                _pressedInside = mouseContained;
-            }
-
-            if (wasPressed && !isPressed)
-            {
-                if (_pressedInside && mouseContained)
-                {
-                    _previousButtonState = ButtonState.Released;
-                    DoClick(x, y);
-                }
-
-                _pressedInside = false;
-            }
-
-            _previousButtonState = mouseState.LeftButton;
-
         }
 
         public override void Enter(StateManager stateManager)
         {
             base.Enter(stateManager);
+
+            _mouse = new MouseClickState(new Rectangle(0, 0, 540, 540));
+            _mouse.Click += (_, e) => DoClick(e);
 
             if (_cancel == null)
             {
@@ -101,17 +74,20 @@ namespace HackThePlanet.FSM.Gameplay
             StateManager.ChangeState(SummonState.Instance);
         }
 
-        private void DoClick(int x, int y)
+        private void DoClick(Vector2 pos)
         {
+            var gridPos = pos / 54;
+            var x = (int)gridPos.X;
+            var y = (int)gridPos.Y;
+
             if (GameState.IsOccupied(x, y))
             {
                 return;
             }
 
             // TODO: Sound effects!
-            var success = GameState.DeployUnit(x, y);
-            if (success)
-                StateManager.ChangeState(SummonState.Instance);
+            CommandStack.Instance.Execute(new AddUnitToBoardCommand(x, y, GameState.UnitToDeployIsGhost, GameState.UnitToDeploy));
+            StateManager.ChangeState(SummonState.Instance);
         }
     }
 }

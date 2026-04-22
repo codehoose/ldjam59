@@ -81,12 +81,11 @@ namespace HackThePlanet.FSM.Gameplay
             var gridPos = new Vector2(mouseState.X, mouseState.Y);
             if (!new Rectangle(0, 0, 540, 540).Contains(gridPos))
             {
-                _cursor.Contained = false;
                 _cursor.Enabled = false;
                 return;
             }
 
-            _cursor.Contained = true;
+            _cursor.Enabled = true;
             _cursor.Color = Color.Green * .5f;
             var normalizedPos = gridPos / 54; // each square is 54 pixels!!
             var x = (int)normalizedPos.X;
@@ -102,7 +101,7 @@ namespace HackThePlanet.FSM.Gameplay
 
             _cursor.Position = new Vector2(x, y) * 54;
 
-            var mouseContained = _cursor.Contained;
+            var mouseContained = _cursor.Enabled;
             var isPressed = mouseState.LeftButton == ButtonState.Pressed;
             var wasPressed = _previousButtonState == ButtonState.Pressed;
 
