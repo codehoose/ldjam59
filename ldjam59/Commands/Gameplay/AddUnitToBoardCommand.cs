@@ -25,7 +25,7 @@ namespace HackThePlanet.Commands.Gameplay
 
         public override void Undo()
         {
-            GameState.Instance.RemoveUnit(_createdUnit);
+            GameState.Instance.RemoveUnit(_createdUnit, giveBackCycles: true);
         }
     }
 }

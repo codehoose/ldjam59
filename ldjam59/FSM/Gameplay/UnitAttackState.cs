@@ -1,5 +1,8 @@
-﻿using HackThePlanet.Components;
+﻿using HackThePlanet.Commands;
+using HackThePlanet.Commands.Gameplay;
+using HackThePlanet.Components;
 using HackThePlanet.Components.Elements;
+using HackThePlanet.FSM.Gameplay.Flow;
 using HackThePlanet.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,6 +30,7 @@ namespace HackThePlanet.FSM.Gameplay
         private IUnit _selectedUnit;
         private int _x;
         private int _y;
+        private IUnit _attackingUnit;
 
         public override void Enter(StateManager stateManager)
         {
@@ -132,13 +136,13 @@ namespace HackThePlanet.FSM.Gameplay
             switch (state)
             {
                 case AttackState.Select:
-                    var unit = Game.State.GetUnitAt(x, y);
-                    if (unit.IsGhost) return; // Ghosts can't attack
-                    if (_units.Contains(unit) && !unit.HasActed)
+                    _attackingUnit = Game.State.GetUnitAt(x, y);
+                    if (_attackingUnit == null || _attackingUnit.IsGhost) return; // Ghosts can't attack
+                    if (_units.Contains(_attackingUnit) && !_attackingUnit.HasActed)
                     {
                         // Set up selection cursor
                         _selection.Enabled = true;
-                        _selectedUnit = unit;
+                        _selectedUnit = _attackingUnit;
                         _selection.Position = new Vector2(x, y) * 54f;
                         state = AttackState.Attack;
                     }
@@ -151,10 +155,13 @@ namespace HackThePlanet.FSM.Gameplay
                         // It's one of ours!
                         _selection.Enabled = true;
                         _selectedUnit = defender;
+                        _attackingUnit = defender;
                         _selection.Position = new Vector2(x, y) * 54f;
                     }
                     else
                     {
+                        var killUnitCommand = new KillUnitCommand(_attackingUnit, _selectedUnit);
+                        CommandStack.Instance.Execute(killUnitCommand);
                         Game.State.KillProcess(defender);
                         RemoveUnit(defender); // Remove from renderer
                         _selection.Enabled = false;

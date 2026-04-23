@@ -53,7 +53,7 @@ namespace HackThePlanet.Models
         public List<int> GetFreeSquaresAround(IUnit agent)
         {
             var list = new List<int>();
-            var (ax, ay) = GetAgentGridPosition(agent);
+            var (ax, ay) = GetUnitGridPosition(agent);
 
             for (var y = ay - 1; y <= ay + 1; y++)
             {
@@ -70,7 +70,7 @@ namespace HackThePlanet.Models
             return list;
         }
 
-        public (int, int) GetAgentGridPosition(IUnit agent)
+        public (int, int) GetUnitGridPosition(IUnit agent)
         {
             var x = agent.TileIndex % 10;
             var y = agent.TileIndex / 10;
@@ -103,7 +103,7 @@ namespace HackThePlanet.Models
             var isAi = unit is Agent;
 
             var list = new List<int>();
-            var (ax, ay) = GetAgentGridPosition(unit);
+            var (ax, ay) = GetUnitGridPosition(unit);
 
             for (var y = ay - sight; y <= ay + sight; y++)
             {

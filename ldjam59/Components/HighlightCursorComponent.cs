@@ -1,8 +1,7 @@
-﻿using HackThePlanet.Components;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace HackThePlanet.FSM.Gameplay
+namespace HackThePlanet.Components
 {
     internal class HighlightCursorComponent : HtpDrawableComponent
     {

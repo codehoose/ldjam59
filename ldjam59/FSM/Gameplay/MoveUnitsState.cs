@@ -1,4 +1,6 @@
-﻿using HackThePlanet.Components;
+﻿using HackThePlanet.Commands;
+using HackThePlanet.Commands.Gameplay;
+using HackThePlanet.Components;
 using HackThePlanet.Components.Elements;
 using HackThePlanet.Models;
 using Microsoft.Xna.Framework;
@@ -159,8 +161,8 @@ namespace HackThePlanet.FSM.Gameplay
                             return;
                         }
 
-                        GameState.MoveUnit(_selectedUnit, x, y);
-                        _selectedUnit.HasActed = true;
+                        var moveUnit = new MoveUnitCommand(_selectedUnit, x, y);
+                        CommandStack.Instance.Execute(moveUnit);
                         _selectedUnit = null;
                         _selection.Enabled = false;
                         state = MoveState.Select;

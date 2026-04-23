@@ -1,5 +1,5 @@
 ﻿using HackThePlanet.Components;
-using HackThePlanet.FSM.Gameplay;
+using HackThePlanet.FSM.Gameplay.Flow;
 using HackThePlanet.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

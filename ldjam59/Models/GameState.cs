@@ -34,7 +34,7 @@ namespace HackThePlanet.Models
         public IEnumerable<Agent> GetAgents() => _players.Select(p => p.Agent);
         public IEnumerable<IUnit> GetUnits() => _board.GetAllUnits();
 
-        public (int, int) GetAgentGridPosition(IUnit agent) => _board.GetAgentGridPosition(agent);
+        public (int, int) GetUnitGridPosition(IUnit agent) => _board.GetUnitGridPosition(agent);
         public List<int> GetFreeSquaresAround(IUnit agent) => _board.GetFreeSquaresAround(agent);
         public List<int> GetAttackTargetsAround(IUnit agent) => _board.GetAttackTargetsAround(agent);
         public List<int> GetOpponentTargets(Agent agent) => _board.GetOpponentTargets(agent);
@@ -118,6 +118,13 @@ namespace HackThePlanet.Models
             return exists;
         }
 
-        internal void RemoveUnit(IUnit unit) => _board.RemoveUnit(unit);
+        internal void RemoveUnit(IUnit unit, bool giveBackCycles = false)
+        {
+            if (giveBackCycles)
+            {
+                _cycles += unit.IsGhost || unit.Type == UnitType.Crawler ? 1 : 2;
+            }
+            _board.RemoveUnit(unit);
+        }
     }
 }

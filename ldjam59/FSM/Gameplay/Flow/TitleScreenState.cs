@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace HackThePlanet.FSM.Gameplay
+namespace HackThePlanet.FSM.Gameplay.Flow
 {
     internal class TitleScreenState : BaseState<TitleScreenState>
     {

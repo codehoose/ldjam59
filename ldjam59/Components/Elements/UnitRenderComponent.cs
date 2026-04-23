@@ -25,7 +25,7 @@ namespace HackThePlanet.Components.Elements
             if (_lastIndex != _unit.TileIndex)
             {
                 _lastIndex = _unit.TileIndex;
-                var (x, y) = HtpGame.State.GetAgentGridPosition(_unit);
+                var (x, y) = HtpGame.State.GetUnitGridPosition(_unit);
                 Position = new Vector2(x * 54, y * 54);
             }
         }
