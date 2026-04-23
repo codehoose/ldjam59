@@ -1,17 +1,18 @@
-﻿using HackThePlanet.Commands;
-using HackThePlanet.Commands.Gameplay;
-using HackThePlanet.Components;
-using HackThePlanet.Components.Elements;
-using HackThePlanet.FSM.Gameplay.Flow;
-using HackThePlanet.Models;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-
-namespace HackThePlanet.FSM.Gameplay
+﻿namespace HackThePlanet.FSM.Gameplay
 {
+    using HackThePlanet.Commands;
+    using HackThePlanet.Commands.Gameplay;
+    using HackThePlanet.Components;
+    using HackThePlanet.Components.Elements;
+    using HackThePlanet.FSM.Gameplay.Flow;
+    using HackThePlanet.Input;
+    using HackThePlanet.Models;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+    using System;
+    using System.Collections.Generic;
+
     internal class UnitAttackState : MainLoopGameState<UnitAttackState>
     {
         enum AttackState
@@ -21,6 +22,7 @@ namespace HackThePlanet.FSM.Gameplay
         }
 
         private HighlightCursorComponent _cursor;
+        private MouseClickState _mouse;
         private CursorComponent _selection;
         private ButtonState _previousButtonState;
         private ButtonComponent _endAttack;
@@ -41,6 +43,11 @@ namespace HackThePlanet.FSM.Gameplay
             foreach (var unit in _units) unit.HasActed = false;
 
             state = AttackState.Select;
+
+            if (_mouse == null)
+            {
+                _mouse = new MouseClickState(new Rectangle(0, 0, 540, 540));
+            }
 
             if (_endAttack == null)
             {
@@ -66,6 +73,7 @@ namespace HackThePlanet.FSM.Gameplay
             }
 
             _endAttack.OnClick += EndMove_Clicked;
+            _mouse.Click += (s, e) => DoClick((int)(e.X / 54f), (int)(e.Y / 54f));
             _selection.Enabled = false;
 
             AddComponent(_cursor);
@@ -83,20 +91,15 @@ namespace HackThePlanet.FSM.Gameplay
         {
             base.Tick(deltaTime);
             var mouseState = Mouse.GetState();
-            var gridPos = new Vector2(mouseState.X, mouseState.Y);
-            if (!new Rectangle(0, 0, 540, 540).Contains(gridPos))
-            {
-                _cursor.Enabled = false;
-                return;
-            }
-
-            _cursor.Enabled = true;
+            _mouse.Tick(deltaTime);
+            _cursor.Enabled = _mouse.Contained;
             _cursor.Color = Color.Green * .5f;
-            var normalizedPos = gridPos / 54; // each square is 54 pixels!!
+
+            var normalizedPos = _mouse.Position / 54; // each square is 54 pixels!!
             var x = (int)normalizedPos.X;
             var y = (int)normalizedPos.Y;
 
-            if (state == AttackState.Attack && _selectedUnit != null)
+            if (_cursor.Enabled && state == AttackState.Attack && _selectedUnit != null)
             {
                 var acceptablePositions = GameState.GetAttackTargetsAround(_selectedUnit);
                 var index = GameState.GetTileIndex(x, y);
@@ -105,31 +108,6 @@ namespace HackThePlanet.FSM.Gameplay
             }
 
             _cursor.Position = new Vector2(x, y) * 54;
-
-            var mouseContained = _cursor.Enabled;
-            var isPressed = mouseState.LeftButton == ButtonState.Pressed;
-            var wasPressed = _previousButtonState == ButtonState.Pressed;
-
-            if (!wasPressed && isPressed)
-            {
-                _pressedInside = mouseContained;
-                _x = x;
-                _y = y;
-            }
-
-            if (wasPressed && !isPressed)
-            {
-                if (_pressedInside && mouseContained)
-                {
-                    _previousButtonState = ButtonState.Released;
-                    DoClick(_x, _y);
-                }
-
-                _pressedInside = false;
-            }
-
-            _previousButtonState = mouseState.LeftButton;
-
         }
 
         private void DoClick(int x, int y)

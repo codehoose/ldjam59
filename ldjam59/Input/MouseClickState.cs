@@ -29,7 +29,6 @@ namespace HackThePlanet.Input
             _position = new Vector2(mouseState.X, mouseState.Y);
 
             Contained = _bounds == null ? true : _bounds.Value.Contains(_position);
-            Debug.WriteLineIf(Contained, "CONTAINED");
             if (!Contained) return;
 
             var mouseContained = Contained;
