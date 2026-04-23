@@ -1,13 +1,13 @@
-﻿using HackThePlanet.Models;
-
-namespace HackThePlanet.Commands.Gameplay
+﻿namespace HackThePlanet.Commands.Gameplay
 {
-    internal class KillProcessCommand : BaseCommand
+    using HackThePlanet.Models;
+
+    internal class RemoveUnitFromBoardCommand : BaseCommand
     {
         private readonly IUnit _attacking;
         private readonly IUnit _defending;
 
-        public KillProcessCommand(IUnit attacking, IUnit defending)
+        public RemoveUnitFromBoardCommand(IUnit attacking, IUnit defending)
         {
             _attacking = attacking;
             _defending = defending;
@@ -16,7 +16,7 @@ namespace HackThePlanet.Commands.Gameplay
         public override void Execute()
         {
             _attacking.HasActed = true;
-            GameState.Instance.KillProcess(_defending);
+            GameState.Instance.RemoveUnit(_defending);
         }
 
         public override void Undo()
@@ -24,7 +24,6 @@ namespace HackThePlanet.Commands.Gameplay
             _attacking.HasActed = false;
             var (x, y) = GameState.Instance.GetUnitGridPosition(_defending);
             GameState.Instance.MoveUnit(_defending, x, y);
-
         }
     }
 }

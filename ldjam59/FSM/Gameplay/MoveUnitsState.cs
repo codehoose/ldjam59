@@ -35,6 +35,8 @@ namespace HackThePlanet.FSM.Gameplay
         {
             base.Enter(stateManager);
 
+            ResetHasBeenUsedFlag();
+
             _units = Game.State.GetPlayerUnits();
             foreach (var unit in _units) unit.HasActed = false;
 
@@ -163,6 +165,7 @@ namespace HackThePlanet.FSM.Gameplay
 
                         var moveUnit = new MoveUnitCommand(_selectedUnit, x, y);
                         CommandStack.Instance.Execute(moveUnit);
+                        SetHasBeenUsed(_selectedUnit);
                         _selectedUnit = null;
                         _selection.Enabled = false;
                         state = MoveState.Select;

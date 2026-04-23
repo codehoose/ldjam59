@@ -54,7 +54,7 @@ namespace HackThePlanet.FSM.Gameplay
             _hackerman.Effects = Game.State.CurrentPlayerIndex != 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             _hackerman.Scale = 2;
 
-            AddComponent(_grid);
+            //AddComponent(_grid);
             AddComponent(_gameState);
             AddComponent(_hackerman);
             foreach (var agent in _agents)
@@ -88,6 +88,37 @@ namespace HackThePlanet.FSM.Gameplay
                 {
                     _agents.RemoveAt(index);
                 }
+            }
+        }
+
+        protected void SetHasBeenUsed(IUnit unit)
+        {
+            var index = _units.FindIndex(u => u.Unit == unit);
+            if (index >= 0)
+            {
+                var unitComponent = _units[index];
+                unitComponent.HasBeenUsed = true;
+            }
+            else
+            {
+                index = _agents.FindIndex(u => u.Unit == unit);
+                if (index >= 0)
+                {
+                    _agents[index].HasBeenUsed = true;
+                }
+            }
+        }
+
+        protected void ResetHasBeenUsedFlag()
+        {
+            foreach (var unit in _units)
+            {
+                unit.HasBeenUsed = false;
+            }
+
+            foreach (var agent in _agents)
+            {
+                agent.HasBeenUsed = false;
             }
         }
 

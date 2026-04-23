@@ -9,9 +9,11 @@ namespace HackThePlanet.Components.Elements
         private IUnit _unit;
         private SpriteSheet _spriteSheet;
         private Texture2D _ghostTexture;
+        private Texture2D _hasBeenUsed;
         private int _lastIndex = -1;
 
         public bool IsGhost { get; set; }
+        public bool HasBeenUsed { get; set; }
         public IUnit Unit => _unit;
 
         public void Init()
@@ -35,6 +37,7 @@ namespace HackThePlanet.Components.Elements
             _spriteSheet = new SpriteSheet(54, 54, texture.Bounds);
             _unit = unit;
             _ghostTexture = game.Ghost;
+            _hasBeenUsed = game.HasBeenUsed;
 
             // Now let's figure out what type of unit we have
             if (_unit is Agent) return; // bail early.. Don't care.
@@ -53,6 +56,12 @@ namespace HackThePlanet.Components.Elements
             if (IsGhost)
             {
                 HtpGame.SpriteBatch.Draw(_ghostTexture, Position, SrcRect, Color, 0f,
+                    Vector2.Zero, Scale, SpriteEffects.None, Layer.UnitIsGhost);
+            }
+
+            if (HasBeenUsed)
+            {
+                HtpGame.SpriteBatch.Draw(_hasBeenUsed, Position, SrcRect, Color, 0f,
                     Vector2.Zero, Scale, SpriteEffects.None, Layer.UnitIsGhost);
             }
         }

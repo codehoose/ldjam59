@@ -23,6 +23,7 @@ namespace HackThePlanet
         public Texture2D WhiteHat { get; private set; }
         public Texture2D BlackHat { get; private set; }
         public Texture2D Ghost { get; private set; }
+        public Texture2D HasBeenUsed { get; private set; }
         public Texture2D Units { get; private set; }
         public Texture2D SelectionCursor { get; private set; }
         public Texture2D Hackerman { get; private set; }
@@ -58,6 +59,7 @@ namespace HackThePlanet
             SelectionCursor = Content.Load<Texture2D>("selection");
             Hackerman = Content.Load<Texture2D>("hackerman");
             HackermanSide = Content.Load<Texture2D>("hackermanside");
+            HasBeenUsed = Content.Load<Texture2D>("hasbeenused");
 
             _stateManager = new FSMComponent(this);
             Components.Add(_stateManager);

@@ -36,6 +36,7 @@ namespace HackThePlanet.FSM.Gameplay
         {
             base.Enter(stateManager);
 
+            ResetHasBeenUsedFlag();
             _units = Game.State.GetPlayerUnits();
             foreach (var unit in _units) unit.HasActed = false;
 
@@ -160,11 +161,12 @@ namespace HackThePlanet.FSM.Gameplay
                     }
                     else
                     {
-                        var killUnitCommand = new KillUnitCommand(_attackingUnit, _selectedUnit);
+                        var killUnitCommand = new KillProcessCommand(_attackingUnit, _selectedUnit);
                         CommandStack.Instance.Execute(killUnitCommand);
                         Game.State.KillProcess(defender);
                         RemoveUnit(defender); // Remove from renderer
                         _selection.Enabled = false;
+                        SetHasBeenUsed(_selectedUnit);
                         _selectedUnit = null;
                         state = AttackState.Select;
 
