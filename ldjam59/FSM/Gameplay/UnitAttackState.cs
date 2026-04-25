@@ -24,15 +24,12 @@
         private HtpDrawableComponent _cursor;
         private MouseClickState _mouse;
         private HtpDrawableComponent _selection;
-        private ButtonState _previousButtonState;
         private ButtonComponent _endAttack;
-        private bool _pressedInside;
         private AttackState state;
         private List<IUnit> _units;
         private IUnit _selectedUnit;
-        private int _x;
-        private int _y;
         private IUnit _attackingUnit;
+        private List<int> _acceptablePositions;
 
         public override void Enter(StateManager stateManager)
         {
@@ -104,10 +101,10 @@
 
             if (_cursor.Enabled && state == AttackState.Attack && _selectedUnit != null)
             {
-                var acceptablePositions = GameState.GetAttackTargetsAround(_selectedUnit);
+                _acceptablePositions = GameState.GetAttackTargetsAround(_selectedUnit);
                 var index = GameState.GetTileIndex(x, y);
                 _cursor.Enabled = true;
-                _cursor.Color = (acceptablePositions.Contains(index) ? Color.Yellow : Color.Transparent) * .5f;
+                _cursor.Color = (_acceptablePositions.Contains(index) ? Color.Yellow : Color.Transparent) * .5f;
             }
 
             _cursor.Position = new Vector2(x, y) * 54;
@@ -120,7 +117,7 @@
                 case AttackState.Select:
                     _attackingUnit = Game.State.GetUnitAt(x, y);
                     if (_attackingUnit == null || _attackingUnit.IsGhost) return; // Ghosts can't attack
-                    if (_units.Contains(_attackingUnit) && !_attackingUnit.HasActed)
+                    if (UnitIsOurs(_attackingUnit) && !_attackingUnit.HasActed)
                     {
                         // Set up selection cursor
                         _selection.Enabled = true;
@@ -132,7 +129,7 @@
                 case AttackState.Attack:
                     var defender = Game.State.GetUnitAt(x, y);
                     if (defender == null) return;
-                    if (_units.Contains(defender))
+                    if (UnitIsOurs(defender))
                     {
                         // It's one of ours!
                         _selection.Enabled = true;
@@ -142,13 +139,23 @@
                     }
                     else
                     {
-                        var killUnitCommand = new KillProcessCommand(_attackingUnit, _selectedUnit);
+                        if (!_acceptablePositions.Contains(defender.TileIndex) || UnitIsOurs(defender))
+                        {
+                            // TODO: Sound effect
+                            _selection.Enabled = false;
+                            _selectedUnit = null;
+                            state = AttackState.Select;
+                            return;
+                        }
+
+                        var killUnitCommand = new KillProcessCommand(_attackingUnit, defender);
                         CommandStack.Instance.Execute(killUnitCommand);
                         Game.State.KillProcess(defender);
                         RemoveUnit(defender); // Remove from renderer
-                        _selection.Enabled = false;
                         SetHasBeenUsed(_selectedUnit);
+                        _selection.Enabled = false;
                         _selectedUnit = null;
+                        _attackingUnit = null;
                         state = AttackState.Select;
 
                         if (defender is Agent agent)
@@ -163,6 +170,8 @@
                     break;
             }
         }
+
+        private bool UnitIsOurs(IUnit defender) => _units.Contains(defender);
 
         private void EndMove_Clicked(object sender, EventArgs e)
         {
