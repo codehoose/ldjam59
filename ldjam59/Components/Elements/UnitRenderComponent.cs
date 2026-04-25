@@ -38,6 +38,10 @@ namespace HackThePlanet.Components.Elements
             _unit = unit;
             _ghostTexture = game.Ghost;
             _hasBeenUsed = game.HasBeenUsed;
+            IsGhost = unit.IsGhost;
+
+            var (x, y) = HtpGame.State.GetUnitGridPosition(_unit);
+            Position = new Vector2(x * 54, y * 54);
 
             // Now let's figure out what type of unit we have
             if (_unit is Agent) return; // bail early.. Don't care.

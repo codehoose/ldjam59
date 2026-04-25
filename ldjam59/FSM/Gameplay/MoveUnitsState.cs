@@ -19,8 +19,8 @@ namespace HackThePlanet.FSM.Gameplay
             Move
         }
 
-        private HighlightCursorComponent _cursor;
-        private CursorComponent _selection;
+        private HtpDrawableComponent _cursor;
+        private HtpDrawableComponent _selection;
         private ButtonState _previousButtonState;
         private ButtonComponent _endMove;
         private bool _pressedInside;
@@ -50,16 +50,19 @@ namespace HackThePlanet.FSM.Gameplay
                     Position = pos
                 };
 
-                var tex = new Texture2D(Game.GraphicsDevice, 1, 1);
-                tex.SetData([Color.White]);
-
-                _cursor = new HighlightCursorComponent(Game, tex, Layer.Gui)
+                if (_cursor == null)
                 {
-                    Width = 54,
-                    Height = 54
-                };
+                    var tex = new Texture2D(Game.GraphicsDevice, 1, 1);
+                    tex.SetData([Color.White]);
 
-                _selection = new CursorComponent(Game, Game.SelectionCursor, Layer.GuiFront)
+                    _cursor = new HtpDrawableComponent(Game, tex, Layer.Gui)
+                    {
+                        Scale = 54,
+                        Enabled = false
+                    };
+                }
+
+                _selection = new HtpDrawableComponent(Game, Game.SelectionCursor, Layer.GuiFront)
                 {
                     Enabled = false
                 };

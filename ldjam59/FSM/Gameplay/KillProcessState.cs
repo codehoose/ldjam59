@@ -11,7 +11,7 @@ namespace HackThePlanet.FSM.Gameplay
     internal class KillProcessState : MainLoopGameState<KillProcessState>
     {
         private ButtonComponent _cancel;
-        private HighlightCursorComponent _cursor;
+        private HtpDrawableComponent _cursor;
         private ButtonState _previousButtonState;
         private int _x;
         private int _y;
@@ -77,14 +77,17 @@ namespace HackThePlanet.FSM.Gameplay
                     Position = pos
                 };
 
-                var tex = new Texture2D(Game.GraphicsDevice, 1, 1);
-                tex.SetData([Color.White]);
-
-                _cursor = new HighlightCursorComponent(Game, tex, Layer.Gui)
+                if (_cursor == null)
                 {
-                    Width = 54,
-                    Height = 54
-                };
+                    var tex = new Texture2D(Game.GraphicsDevice, 1, 1);
+                    tex.SetData([Color.White]);
+
+                    _cursor = new HtpDrawableComponent(Game, tex, Layer.Gui)
+                    {
+                        Scale = 54,
+                        Enabled = false
+                    };
+                }
             }
 
             _cancel.OnClick += Cancel_Clicked;

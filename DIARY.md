@@ -71,3 +71,17 @@ What I've learned so far:
 - Plan Plan Plan. You can't plan enough for the jam. It's not about getting your tech or workspace ready, it's about coming up with a couple of game style ideas and planning out how you could fit them into a theme
 - Get the base functionality in first. Don't worry about looks, it's all about getting from screen to screen and the flow of the game. Concentrate on the core loop and build it piece by piece. Talking of which...
 - Using a single game state to hold the current state of the game and a Finite State Machine was an amazing help. It's so easy to test just one bit of the core loop. I also created "core loop" states that always showed various bits and pieces like how many cycles were left, who the current player is etc.
+
+## 2026-04-25 11:15 Missed the deadline, but still going
+
+Well, I got the basic game working but ran out of time to get the polish items in. I could have handed it in. But.. Decided to spend some more time on polish. So far I've re-worked the actions into commands to make it easier to:
+- Serialize the actions across a network, or via email or ...
+- Replay actions for the opposition player to let them see what their opponent has been up to
+
+At any rate, it's now going to be a mobile game. Probably :)
+
+I've also added a [CLAUDE.md](CLAUDE.md) file for future. I didn't involve the AI at all developing the game so far and I don't think that will change. Coding is my hobby as well as my job and it's fun. And I actually enjoy this wee game and want to see it finished.
+
+Fixed text render issues; the text was on the same layer as the front GUI so I re-ordered a couple of things. 
+
+Reworked the game states so that there's only one place unit stage. Added toggle buttons to make it easier to deploy multiples of the same unit type.

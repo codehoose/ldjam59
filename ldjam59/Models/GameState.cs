@@ -23,8 +23,6 @@ namespace HackThePlanet.Models
         public int CurrentPlayerIndex => _current;
         public Player Winner => _winner;
         public int Cycles => _cycles;
-        public UnitType UnitToDeploy { get; set; } = UnitType.None;
-        public bool UnitToDeployIsGhost { get; set; }
 
         public GameState()
         {
@@ -35,6 +33,7 @@ namespace HackThePlanet.Models
         public IEnumerable<IUnit> GetUnits() => _board.GetAllUnits();
 
         public (int, int) GetUnitGridPosition(IUnit agent) => _board.GetUnitGridPosition(agent);
+        public (int, int) GetGridPosition(int index) => (index % 10, index / 10);
         public List<int> GetFreeSquaresAround(IUnit agent) => _board.GetFreeSquaresAround(agent);
         public List<int> GetAttackTargetsAround(IUnit agent) => _board.GetAttackTargetsAround(agent);
         public List<int> GetOpponentTargets(Agent agent) => _board.GetOpponentTargets(agent);
@@ -76,7 +75,7 @@ namespace HackThePlanet.Models
 
         internal IUnit DeployUnit(int x, int y, bool isGhost, UnitType type)
         {
-            var unit = _board.AddUnit(_currentPlayer, UnitToDeploy, x, y, UnitToDeployIsGhost);
+            var unit = _board.AddUnit(_currentPlayer, type, x, y, isGhost);
             _cycles -= isGhost || type == UnitType.Crawler ? 1 : 2;
             return unit;
         }

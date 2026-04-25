@@ -21,9 +21,9 @@
             Attack
         }
 
-        private HighlightCursorComponent _cursor;
+        private HtpDrawableComponent _cursor;
         private MouseClickState _mouse;
-        private CursorComponent _selection;
+        private HtpDrawableComponent _selection;
         private ButtonState _previousButtonState;
         private ButtonComponent _endAttack;
         private bool _pressedInside;
@@ -57,17 +57,20 @@
                     Position = pos
                 };
 
+                _selection = new HtpDrawableComponent(Game, Game.SelectionCursor, Layer.GuiFront)
+                {
+                    Enabled = false
+                };
+            }
+
+            if (_cursor == null)
+            {
                 var tex = new Texture2D(Game.GraphicsDevice, 1, 1);
                 tex.SetData([Color.White]);
 
-                _cursor = new HighlightCursorComponent(Game, tex, Layer.Gui)
+                _cursor = new HtpDrawableComponent(Game, tex, Layer.Gui)
                 {
-                    Width = 54,
-                    Height = 54
-                };
-
-                _selection = new CursorComponent(Game, Game.SelectionCursor, Layer.GuiFront)
-                {
+                    Scale = 54,
                     Enabled = false
                 };
             }

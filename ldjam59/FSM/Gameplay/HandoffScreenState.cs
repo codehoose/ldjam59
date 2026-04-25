@@ -49,7 +49,7 @@ namespace HackThePlanet.FSM.Gameplay
 
         private void Button_Click(object sender, EventArgs e)
         {
-            StateManager.ChangeState(SummonState.Instance);
+            StateManager.ChangeState(PlaceUnitsState.Instance);
         }
     }
 }

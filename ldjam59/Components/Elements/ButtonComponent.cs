@@ -31,6 +31,8 @@ namespace HackThePlanet.Components.Elements
             _endCapWidth = endCapWidth;
         }
 
+        protected virtual bool IsPressed(bool isPressed) => isPressed;
+
         public override void Update(GameTime gameTime)
         {
             var mouseState = Mouse.GetState();
@@ -41,9 +43,9 @@ namespace HackThePlanet.Components.Elements
 
             _textOffset = (new Vector2(rect.Width, rect.Height) - HtpGame.Font.MeasureString(Text)) / 2f;
 
-            _offset = mouseContained && isPressed ? _spriteSheet.CellWidth : 0;
-
-            _textOffset += !Disabled && mouseContained && isPressed ? new Vector2(2, 2) : Vector2.Zero;
+            _offset = IsPressed(mouseContained && isPressed) ? _spriteSheet.CellWidth : 0;
+            
+            _textOffset += !Disabled && IsPressed(mouseContained && isPressed) ? new Vector2(2, 2) : Vector2.Zero;
             if (Disabled)
             {
                 _offset = _spriteSheet.CellWidth * 2;
@@ -66,7 +68,6 @@ namespace HackThePlanet.Components.Elements
             }
 
             _previousButtonState = mouseState.LeftButton;
-
         }
 
         public override void Draw(GameTime gameTime)

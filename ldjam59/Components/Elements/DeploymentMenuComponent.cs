@@ -7,10 +7,10 @@ namespace HackThePlanet.Components.Elements
 {
     internal class DeploymentMenuComponent : HtpComponent, IParentComponent
     {
-        private readonly ButtonComponent _deployCrawler;
-        private readonly ButtonComponent _deployDrone;
-        private readonly ButtonComponent _deployCrawlerGhost;
-        private readonly ButtonComponent _deployDroneGhost;
+        private readonly ToggleButtonComponent _deployCrawler;
+        private readonly ToggleButtonComponent _deployDrone;
+        private readonly ToggleButtonComponent _deployCrawlerGhost;
+        private readonly ToggleButtonComponent _deployDroneGhost;
         private readonly ButtonComponent _endDeploy;
         private int _cycles;
 
@@ -21,7 +21,7 @@ namespace HackThePlanet.Components.Elements
             var pos = new Vector2(750 - 380 / 2, 220);
             _cycles = game.State.Cycles;
 
-            _deployCrawler = new ButtonComponent(game, buttonTexture, "Deploy Crawler", 380, 4)
+            _deployCrawler = new ToggleButtonComponent(game, buttonTexture, "Deploy Crawler", 380, 4)
             {
                 Position = pos,
             };
@@ -29,7 +29,7 @@ namespace HackThePlanet.Components.Elements
             _deployCrawler.OnClick += Button_Click;
             _deployCrawler.Disabled = HtpGame.State.Cycles < 1;
 
-            _deployCrawlerGhost = new ButtonComponent(game, buttonTexture, "Deploy Crawler Ghost", 380, 4)
+            _deployCrawlerGhost = new ToggleButtonComponent(game, buttonTexture, "Deploy Crawler Ghost", 380, 4)
             {
                 Position = pos,
             };
@@ -37,7 +37,7 @@ namespace HackThePlanet.Components.Elements
             _deployCrawlerGhost.OnClick += Button_Click;
             _deployCrawlerGhost.Disabled = HtpGame.State.Cycles < 1;
 
-            _deployDrone = new ButtonComponent(game, buttonTexture, "Deploy Drone", 380, 4)
+            _deployDrone = new ToggleButtonComponent(game, buttonTexture, "Deploy Drone", 380, 4)
             {
                 Position = pos
             };
@@ -45,7 +45,7 @@ namespace HackThePlanet.Components.Elements
             _deployDrone.OnClick += Button_Click;
             _deployDrone.Disabled = HtpGame.State.Cycles < 2;
 
-            _deployDroneGhost = new ButtonComponent(game, buttonTexture, "Deploy Drone Ghost", 380, 4)
+            _deployDroneGhost = new ToggleButtonComponent(game, buttonTexture, "Deploy Drone Ghost", 380, 4)
             {
                 Position = pos
             };
@@ -85,6 +85,11 @@ namespace HackThePlanet.Components.Elements
 
         public void AddComponents()
         {
+            _deployCrawler.Reset();
+            _deployDrone.Reset();
+            _deployCrawlerGhost.Reset();
+            _deployDroneGhost.Reset();
+
             HtpGame.Components.Add(_deployCrawler);
             HtpGame.Components.Add(_deployDrone);
             HtpGame.Components.Add(_deployCrawlerGhost);
