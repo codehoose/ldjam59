@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-
-namespace HackThePlanet.Components.Elements
+﻿namespace HackThePlanet.Components.Elements
 {
-    internal class GameStateComponent : HtpComponent, IParentComponent
+	using HackThePlanet.Models;
+	using Microsoft.Xna.Framework;
+
+	internal class GameStateComponent : HtpComponent, IParentComponent
     {
         private TextComponent _text;
 
@@ -16,7 +17,7 @@ namespace HackThePlanet.Components.Elements
         {
             base.Update(gameTime);
 
-            _text.Text = $"Player: {HtpGame.State.CurrentPlayer.Name}, Cycles: {HtpGame.State.Cycles}";
+            _text.Text = $"Player: {GameState.Instance.CurrentPlayer.Name}, Cycles: {GameState.Instance.Cycles}";
 
         }
 

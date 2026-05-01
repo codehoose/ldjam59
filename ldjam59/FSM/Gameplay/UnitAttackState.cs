@@ -31,12 +31,12 @@
         private IUnit _attackingUnit;
         private List<int> _acceptablePositions;
 
-        public override void Enter(StateManager stateManager)
+        public override void Enter(IStateManager stateManager)
         {
             base.Enter(stateManager);
 
             ResetHasBeenUsedFlag();
-            _units = Game.State.GetPlayerUnits();
+            _units = GameState.Instance.GetPlayerUnits();
             foreach (var unit in _units) unit.HasActed = false;
 
             state = AttackState.Select;
@@ -49,12 +49,12 @@
             if (_endAttack == null)
             {
                 var pos = new Vector2(750 - 380 / 2, 400);
-                _endAttack = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "End Attack", 380, 4)
+                _endAttack = new ButtonComponent((HackThePlanetGame)stateManager.Game, Content.Load<Texture2D>("button"), "End Attack", 380, 4)
                 {
                     Position = pos
                 };
 
-                _selection = new HtpDrawableComponent(Game, Game.SelectionCursor, Layer.GuiFront)
+                _selection = new HtpDrawableComponent((HackThePlanetGame)stateManager.Game, HackThePlanetGame.Instance.SelectionCursor, Layer.GuiFront)
                 {
                     Enabled = false
                 };
@@ -62,10 +62,10 @@
 
             if (_cursor == null)
             {
-                var tex = new Texture2D(Game.GraphicsDevice, 1, 1);
+                var tex = new Texture2D(stateManager.Game.GraphicsDevice, 1, 1);
                 tex.SetData([Color.White]);
 
-                _cursor = new HtpDrawableComponent(Game, tex, Layer.Gui)
+                _cursor = new HtpDrawableComponent((HackThePlanetGame)stateManager.Game, tex, Layer.Gui)
                 {
                     Scale = 54,
                     Enabled = false
@@ -81,7 +81,7 @@
             AddComponent(_endAttack);
         }
 
-        public override void Exit(StateManager stateManager)
+        public override void Exit(IStateManager stateManager)
         {
             _endAttack.OnClick -= EndMove_Clicked;
             base.Exit(stateManager);
@@ -101,8 +101,8 @@
 
             if (_cursor.Enabled && state == AttackState.Attack && _selectedUnit != null)
             {
-                _acceptablePositions = GameState.GetAttackTargetsAround(_selectedUnit);
-                var index = GameState.GetTileIndex(x, y);
+                _acceptablePositions = GameState.Instance.GetAttackTargetsAround(_selectedUnit);
+                var index = GameState.Instance.GetTileIndex(x, y);
                 _cursor.Enabled = true;
                 _cursor.Color = (_acceptablePositions.Contains(index) ? Color.Yellow : Color.Transparent) * .5f;
             }
@@ -115,7 +115,7 @@
             switch (state)
             {
                 case AttackState.Select:
-                    _attackingUnit = Game.State.GetUnitAt(x, y);
+                    _attackingUnit = GameState.Instance.GetUnitAt(x, y);
                     if (_attackingUnit == null || _attackingUnit.IsGhost) return; // Ghosts can't attack
                     if (UnitIsOurs(_attackingUnit) && !_attackingUnit.HasActed)
                     {
@@ -127,7 +127,7 @@
                     }
                     break;
                 case AttackState.Attack:
-                    var defender = Game.State.GetUnitAt(x, y);
+                    var defender = GameState.Instance.GetUnitAt(x, y);
                     if (defender == null) return;
                     if (UnitIsOurs(defender))
                     {
@@ -150,7 +150,7 @@
 
                         var killUnitCommand = new KillProcessCommand(_attackingUnit, defender);
                         CommandStack.Instance.Execute(killUnitCommand);
-                        Game.State.KillProcess(defender);
+                        GameState.Instance.KillProcess(defender);
                         RemoveUnit(defender); // Remove from renderer
                         SetHasBeenUsed(_selectedUnit);
                         _selection.Enabled = false;

@@ -12,7 +12,7 @@ namespace HackThePlanet.FSM.Gameplay.Flow
         private ButtonComponent _playGame;
         private ButtonComponent _instructions;
 
-        public override void Enter(StateManager stateManager)
+        public override void Enter(IStateManager stateManager)
         {
             base.Enter(stateManager);
 
@@ -20,11 +20,11 @@ namespace HackThePlanet.FSM.Gameplay.Flow
             {
                 var pos = new Vector2(600, 350);
 
-                _background = new HtpDrawableComponent(Game, Content.Load<Texture2D>("hackerman-title"), Layer.Background)
+                _background = new HtpDrawableComponent((HackThePlanetGame)stateManager.Game, Content.Load<Texture2D>("hackerman-title"), Layer.Background)
                 {
                     Scale = 2
                 };
-                _playGame = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "Play Game", 256, 4)
+                _playGame = new ButtonComponent((HackThePlanetGame)stateManager.Game, Content.Load<Texture2D>("button"), "Play Game", 256, 4)
                 {
                     Position = pos
                 };
@@ -32,7 +32,7 @@ namespace HackThePlanet.FSM.Gameplay.Flow
 
 
                 pos += new Vector2(0, 40);
-                _instructions = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "Instructions", 256, 4)
+                _instructions = new ButtonComponent((HackThePlanetGame)stateManager.Game, Content.Load<Texture2D>("button"), "Instructions", 256, 4)
                 {
                     Position = pos,
                     Disabled = true
@@ -45,7 +45,7 @@ namespace HackThePlanet.FSM.Gameplay.Flow
             AddComponent(_instructions);
         }
 
-        public override void Exit(StateManager stateManager)
+        public override void Exit(IStateManager stateManager)
         {
             base.Exit(stateManager);
             _instructions.OnClick -= Instructions_Clicked;

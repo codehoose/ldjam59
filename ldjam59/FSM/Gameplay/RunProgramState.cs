@@ -7,20 +7,20 @@ namespace HackThePlanet.FSM.Gameplay
     {
         private RunProgramComponent _menu;
 
-        public override void Enter(StateManager stateManager)
+        public override void Enter(IStateManager stateManager)
         {
             base.Enter(stateManager);
 
             if (_menu == null)
             {
-                _menu = new RunProgramComponent(Game, Content.Load<Texture2D>("button"));
+                _menu = new RunProgramComponent((HackThePlanetGame)stateManager.Game, Content.Load<Texture2D>("button"));
             }
 
             _menu.OnClick += Menu_Click;
             AddComponent(_menu);
         }
 
-        public override void Exit(StateManager stateManager)
+        public override void Exit(IStateManager stateManager)
         {
             _menu.OnClick -= Menu_Click;
             base.Exit(stateManager);

@@ -1,10 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-
-namespace HackThePlanet.Components.Elements
+﻿namespace HackThePlanet.Components.Elements
 {
-    internal class RunProgramComponent : HtpComponent, IParentComponent
+	using HackThePlanet.Models;
+	using Microsoft.Xna.Framework;
+	using Microsoft.Xna.Framework.Graphics;
+	using System;
+
+	internal class RunProgramComponent : HtpComponent, IParentComponent
     {
         private readonly ButtonComponent _killProcess;
         private readonly ButtonComponent _threatScan;
@@ -16,7 +17,7 @@ namespace HackThePlanet.Components.Elements
         public RunProgramComponent(HackThePlanetGame game, Texture2D buttonTexture) : base(game)
         {
             var pos = new Vector2(750 - 380 / 2, 220);
-            _cycles = game.State.Cycles;
+            _cycles = GameState.Instance.Cycles;
 
             _killProcess = new ButtonComponent(game, buttonTexture, "Kill Process", 380, 4)
             {
@@ -24,7 +25,7 @@ namespace HackThePlanet.Components.Elements
             };
             pos += new Vector2(0, 40);
             _killProcess.OnClick += Button_Click;
-            _killProcess.Disabled = HtpGame.State.Cycles < 2;
+            _killProcess.Disabled = GameState.Instance.Cycles < 2;
 
             _threatScan = new ButtonComponent(game, buttonTexture, "Threat Scan", 380, 4)
             {
@@ -34,7 +35,7 @@ namespace HackThePlanet.Components.Elements
 
             pos += new Vector2(0, 80);
             _threatScan.OnClick += Button_Click;
-            //_threatScan.Disabled = HtpGame.State.Cycles < 2;
+            //_threatScan.Disabled = GameState.Instance.Cycles < 2;
 
             pos += new Vector2(0, 60);
 
@@ -49,12 +50,12 @@ namespace HackThePlanet.Components.Elements
         {
             base.Update(gameTime);
 
-            if (_cycles != HtpGame.State.Cycles)
+            if (_cycles != GameState.Instance.Cycles)
             {
-                _killProcess.Disabled = HtpGame.State.Cycles < 2;
-                _threatScan.Disabled = true || HtpGame.State.Cycles < 2;
+                _killProcess.Disabled = GameState.Instance.Cycles < 2;
+                _threatScan.Disabled = true || GameState.Instance.Cycles < 2;
 
-                _cycles = HtpGame.State.Cycles;
+                _cycles = GameState.Instance.Cycles;
             }
         }
 

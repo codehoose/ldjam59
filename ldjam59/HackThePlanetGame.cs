@@ -1,4 +1,5 @@
 ﻿using HackThePlanet.Components;
+using HackThePlanet.FSM;
 using HackThePlanet.FSM.Gameplay.Flow;
 using HackThePlanet.Models;
 using Microsoft.Xna.Framework;
@@ -11,7 +12,8 @@ namespace HackThePlanet
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private FSMComponent _stateManager;
+        private IStateManager _stateManager;
+        private FSMComponent _stateManagerComponent;
 
         public static HackThePlanetGame Instance { get; private set; }
 
@@ -61,9 +63,10 @@ namespace HackThePlanet
             HackermanSide = Content.Load<Texture2D>("hackermanside");
             HasBeenUsed = Content.Load<Texture2D>("hasbeenused");
 
-            _stateManager = new FSMComponent(this);
-            Components.Add(_stateManager);
-            _stateManager.StateManager.ChangeState(TitleScreenState.Instance);
+            _stateManager = new StateManager<HackThePlanetGame>(this);
+            _stateManagerComponent = new FSMComponent(this, _stateManager);
+            Components.Add(_stateManagerComponent);
+            _stateManagerComponent.StateManager.ChangeState(TitleScreenState.Instance);
         }
 
         protected override void Update(GameTime gameTime)

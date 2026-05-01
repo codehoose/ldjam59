@@ -33,8 +33,8 @@ namespace HackThePlanet.FSM.Gameplay
             var x = (int)normalizedPos.X;
             var y = (int)normalizedPos.Y;
 
-            var acceptablePositions = GameState.GetOpponentTargets(GameState.CurrentPlayer.Agent);
-            var index = GameState.GetTileIndex(x, y);
+            var acceptablePositions = GameState.Instance.GetOpponentTargets(GameState.Instance.CurrentPlayer.Agent);
+            var index = GameState.Instance.GetTileIndex(x, y);
             _cursor.Enabled = true;
             _cursor.Color = (acceptablePositions.Contains(index) ? Color.Green : Color.Red) * .5f;
             _cursor.Position = new Vector2(x, y) * 54;
@@ -65,24 +65,24 @@ namespace HackThePlanet.FSM.Gameplay
 
         }
 
-        public override void Enter(StateManager stateManager)
+        public override void Enter(IStateManager stateManager)
         {
             base.Enter(stateManager);
 
             if (_cancel == null)
             {
                 var pos = new Vector2(750 - 380 / 2, 400);
-                _cancel = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "Cancel", 380, 4)
+                _cancel = new ButtonComponent((HackThePlanetGame)stateManager.Game, Content.Load<Texture2D>("button"), "Cancel", 380, 4)
                 {
                     Position = pos
                 };
 
                 if (_cursor == null)
                 {
-                    var tex = new Texture2D(Game.GraphicsDevice, 1, 1);
+                    var tex = new Texture2D(stateManager.Game.GraphicsDevice, 1, 1);
                     tex.SetData([Color.White]);
 
-                    _cursor = new HtpDrawableComponent(Game, tex, Layer.Gui)
+                    _cursor = new HtpDrawableComponent((HackThePlanetGame)stateManager.Game, tex, Layer.Gui)
                     {
                         Scale = 54,
                         Enabled = false
@@ -95,11 +95,11 @@ namespace HackThePlanet.FSM.Gameplay
             AddComponent(_cancel);
         }
 
-        public override void Exit(StateManager stateManager)
+        public override void Exit(IStateManager stateManager)
         {
             _cancel.OnClick -= Cancel_Clicked;
-            Game.Components.Remove(_cursor);
-            Game.Components.Remove(_cancel);
+            stateManager.Game.Components.Remove(_cursor);
+            stateManager.Game.Components.Remove(_cancel);
             base.Exit(stateManager);
         }
 
@@ -110,16 +110,17 @@ namespace HackThePlanet.FSM.Gameplay
 
         private void DoClick(int x, int y)
         {
-            var opponent = Game.State.GetUnitAt(x, y);
+            var opponent = GameState.Instance.GetUnitAt(x, y);
             if (opponent is Agent || opponent is null) return; // Can't kill an AI or NULL with Kill Process
 
             var unit = opponent as Unit;
-            if (unit.Agent == GameState.CurrentPlayer.Agent)
+            if (unit.Agent == GameState.Instance.CurrentPlayer.Agent)
             {
                 return;
             }
 
-            GameState.KillProcess(opponent);
+            // TODO: Should THIS BE A COMMAND?!?! OR SHOULD KILL PROCESS STATE BE DELETED?
+            GameState.Instance.KillProcess(opponent);
             RemoveUnit(opponent); // Remove from renderer
 
             StateManager.ChangeState(RunProgramState.Instance);

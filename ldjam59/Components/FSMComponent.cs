@@ -5,11 +5,11 @@ namespace HackThePlanet.Components
 {
     internal class FSMComponent : HtpComponent
     {
-        public StateManager StateManager { get; }
+        public IStateManager StateManager { get; }
 
-        public FSMComponent(HackThePlanetGame game) : base(game)
+        public FSMComponent(HackThePlanetGame game, IStateManager stateManager) : base(game)
         {
-            StateManager = new StateManager(game);
+            StateManager = stateManager;
         }
 
         public override void Update(GameTime gameTime)

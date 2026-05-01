@@ -39,15 +39,15 @@ namespace HackThePlanet.FSM.Gameplay
             var x = (int)normalizedPos.X;
             var y = (int)normalizedPos.Y;
 
-            var acceptablePositions = GameState.GetFreeSquaresAround(GameState.CurrentPlayer.Agent);
-            var index = GameState.GetTileIndex(x, y);
-            var validCellAndHasCycles = acceptablePositions.Contains(index) && GameState.Cycles > 0;
+            var acceptablePositions = GameState.Instance.GetFreeSquaresAround(GameState.Instance.CurrentPlayer.Agent);
+            var index = GameState.Instance.GetTileIndex(x, y);
+            var validCellAndHasCycles = acceptablePositions.Contains(index) && GameState.Instance.Cycles > 0;
             _cursor.Enabled = _mouse.Contained;
             _cursor.Color = (validCellAndHasCycles ? Color.Green : Color.Red) * .5f;
             _cursor.Position = new Vector2(x, y) * 54;
         }
 
-        public override void Enter(StateManager stateManager)
+        public override void Enter(IStateManager stateManager)
         {
             base.Enter(stateManager);
             _phase = SummonPhase.SelectUnitType;
@@ -57,14 +57,14 @@ namespace HackThePlanet.FSM.Gameplay
 
             if (_deploymentMenu == null)
             {
-                _deploymentMenu = new DeploymentMenuComponent(Game, Content.Load<Texture2D>("button"));
+                _deploymentMenu = new DeploymentMenuComponent((HackThePlanetGame)stateManager.Game, Content.Load<Texture2D>("button"));
             }
 
             if (_cursor == null)
             {
-                var tex = new Texture2D(Game.GraphicsDevice, 1, 1);
+                var tex = new Texture2D(stateManager.Game.GraphicsDevice, 1, 1);
                 tex.SetData([Color.White]);
-                _cursor = new HtpDrawableComponent(Game, tex, Layer.Gui)
+                _cursor = new HtpDrawableComponent((HackThePlanetGame)stateManager.Game, tex, Layer.Gui)
                 {
                     Scale = 54,
                     Enabled = false
@@ -77,7 +77,7 @@ namespace HackThePlanet.FSM.Gameplay
             AddComponent(_cursor);
         }
 
-        public override void Exit(StateManager stateManager)
+        public override void Exit(IStateManager stateManager)
         {
             _deploymentMenu.OnClick -= Menu_Click;
 
@@ -86,7 +86,7 @@ namespace HackThePlanet.FSM.Gameplay
                 RemoveComponent(unit);
             }
 
-            Game.Components.Remove(_cursor);
+            stateManager.Game.Components.Remove(_cursor);
             base.Exit(stateManager);
         }
 
@@ -126,14 +126,14 @@ namespace HackThePlanet.FSM.Gameplay
             var x = (int)gridPos.X;
             var y = (int)gridPos.Y;
 
-            if (GameState.IsOccupied(x, y) || GameState.Cycles == 0)
+            if (GameState.Instance.IsOccupied(x, y) || GameState.Instance.Cycles == 0)
             {
                 return;
             }
 
             CommandStack.Instance.Execute(new AddUnitToBoardCommand(x, y, _deployUnitIsGhost, _deployUnit));
-            var index = GameState.GetTileIndex(x, y);
-            var newUnit = new UnitRenderComponent(Game, new Unit(null, _deployUnit, _deployUnitIsGhost, index), Game.Units, GameState.CurrentPlayerIndex == 0);
+            var index = GameState.Instance.GetTileIndex(x, y);
+            var newUnit = new UnitRenderComponent((HackThePlanetGame)StateManager.Game, new Unit(null, _deployUnit, _deployUnitIsGhost, index), HackThePlanetGame.Instance.Units, GameState.Instance.CurrentPlayerIndex == 0);
             AddComponent(newUnit);
             _placedUnits.Add(newUnit);
         }

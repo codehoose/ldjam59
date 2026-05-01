@@ -31,13 +31,13 @@ namespace HackThePlanet.FSM.Gameplay
         private IUnit _selectedUnit;
         private List<int> _acceptablePositions;
 
-        public override void Enter(StateManager stateManager)
+        public override void Enter(IStateManager stateManager)
         {
             base.Enter(stateManager);
 
             ResetHasBeenUsedFlag();
 
-            _units = Game.State.GetPlayerUnits();
+            _units = GameState.Instance.GetPlayerUnits();
             foreach (var unit in _units) unit.HasActed = false;
 
             state = MoveState.Select;
@@ -45,24 +45,24 @@ namespace HackThePlanet.FSM.Gameplay
             if (_endMove == null)
             {
                 var pos = new Vector2(750 - 380 / 2, 400);
-                _endMove = new ButtonComponent(Game, Content.Load<Texture2D>("button"), "End Move", 380, 4)
+                _endMove = new ButtonComponent((HackThePlanetGame)stateManager.Game, Content.Load<Texture2D>("button"), "End Move", 380, 4)
                 {
                     Position = pos
                 };
 
                 if (_cursor == null)
                 {
-                    var tex = new Texture2D(Game.GraphicsDevice, 1, 1);
+                    var tex = new Texture2D(stateManager.Game.GraphicsDevice, 1, 1);
                     tex.SetData([Color.White]);
 
-                    _cursor = new HtpDrawableComponent(Game, tex, Layer.Gui)
+                    _cursor = new HtpDrawableComponent((HackThePlanetGame)stateManager.Game, tex, Layer.Gui)
                     {
                         Scale = 54,
                         Enabled = false
                     };
                 }
 
-                _selection = new HtpDrawableComponent(Game, Game.SelectionCursor, Layer.GuiFront)
+                _selection = new HtpDrawableComponent((HackThePlanetGame)stateManager.Game, HackThePlanetGame.Instance.SelectionCursor, Layer.GuiFront)
                 {
                     Enabled = false
                 };
@@ -76,7 +76,7 @@ namespace HackThePlanet.FSM.Gameplay
             AddComponent(_endMove);
         }
 
-        public override void Exit(StateManager stateManager)
+        public override void Exit(IStateManager stateManager)
         {
             _endMove.OnClick -= EndMove_Clicked;
             base.Exit(stateManager);
@@ -101,8 +101,8 @@ namespace HackThePlanet.FSM.Gameplay
 
             if (state == MoveState.Move && _selectedUnit != null)
             {
-                _acceptablePositions = GameState.GetFreeSquaresAround(_selectedUnit);
-                var index = GameState.GetTileIndex(x, y);
+                _acceptablePositions = GameState.Instance.GetFreeSquaresAround(_selectedUnit);
+                var index = GameState.Instance.GetTileIndex(x, y);
                 _cursor.Enabled = true;
                 _cursor.Color = (_acceptablePositions.Contains(index) ? Color.Yellow : Color.Transparent) * .5f;
             }
@@ -140,7 +140,7 @@ namespace HackThePlanet.FSM.Gameplay
             switch( state)
             {
                 case MoveState.Select:
-                    var unit = Game.State.GetUnitAt(x, y);
+                    var unit = GameState.Instance.GetUnitAt(x, y);
                     if (_units.Contains(unit) && !unit.HasActed)
                     {
                         // Set up selection cursor
@@ -151,7 +151,7 @@ namespace HackThePlanet.FSM.Gameplay
                     }
                     break;
                 case MoveState.Move:
-                    var unitAlt = Game.State.GetUnitAt(x, y);
+                    var unitAlt = GameState.Instance.GetUnitAt(x, y);
                     if (_units.Contains(unitAlt))
                     {
                         // Set up selection cursor
@@ -161,7 +161,7 @@ namespace HackThePlanet.FSM.Gameplay
                     }
                     else
                     {
-                        if (!_acceptablePositions.Contains(GameState.GetTileIndex(x,y)))
+                        if (!_acceptablePositions.Contains(GameState.Instance.GetTileIndex(x,y)))
                         {
                             return;
                         }

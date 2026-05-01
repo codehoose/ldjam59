@@ -19,7 +19,7 @@ namespace HackThePlanet.FSM.Gameplay
         private List<UnitRenderComponent> _agents = [];
         private List<UnitRenderComponent> _units = [];
 
-        public override void Enter(StateManager stateManager)
+        public override void Enter(IStateManager stateManager)
         {
             base.Enter(stateManager);
 
@@ -28,12 +28,12 @@ namespace HackThePlanet.FSM.Gameplay
                 SetupComponents(stateManager);
             }
 
-            var playerUnits = Game.State.GetAgentUnits();
+            var playerUnits = GameState.Instance.GetAgentUnits();
 
-            foreach (var u in Game.State.GetUnits())
+            foreach (var u in GameState.Instance.GetUnits())
             {
-                var isWhiteHat = GameState.GetIsWhiteHat(u);
-                var unit = new UnitRenderComponent(Game, u, Game.Units, isWhiteHat)
+                var isWhiteHat = GameState.Instance.GetIsWhiteHat(u);
+                var unit = new UnitRenderComponent((HackThePlanetGame)stateManager.Game, u, HackThePlanetGame.Instance.Units, isWhiteHat)
                 {
                     IsGhost = u.IsGhost && playerUnits.Contains(u)
                 };
@@ -41,17 +41,17 @@ namespace HackThePlanet.FSM.Gameplay
                 AddComponent(unit);
             }
 
-            var textures = new[] { Game.WhiteHat, Game.BlackHat };
+            var textures = new[] { HackThePlanetGame.Instance.WhiteHat, HackThePlanetGame.Instance.BlackHat };
 
             var index = 0;
-            foreach (var a in Game.State.GetAgents())
+            foreach (var a in GameState.Instance.GetAgents())
             {
-                var agentComponent = new UnitRenderComponent(Game, a, textures[index++], false);
+                var agentComponent = new UnitRenderComponent((HackThePlanetGame)stateManager.Game, a, textures[index++], false);
                 _agents.Add(agentComponent);
             }
 
-            _hackerman.Color = Game.State.CurrentPlayerIndex == 0 ? Color.White : Color.Orange;
-            _hackerman.Effects = Game.State.CurrentPlayerIndex != 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            _hackerman.Color = GameState.Instance.CurrentPlayerIndex == 0 ? Color.White : Color.Orange;
+            _hackerman.Effects = GameState.Instance.CurrentPlayerIndex != 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             _hackerman.Scale = 2;
 
             //AddComponent(_grid);
@@ -64,7 +64,7 @@ namespace HackThePlanet.FSM.Gameplay
             }
         }
 
-        public override void Exit(StateManager stateManager)
+        public override void Exit(IStateManager stateManager)
         {
             base.Exit(stateManager);
 
@@ -122,11 +122,11 @@ namespace HackThePlanet.FSM.Gameplay
             }
         }
 
-        private void SetupComponents(StateManager stateManager)
+        private void SetupComponents(IStateManager stateManager)
         {
-            _grid = new BackgroundGridComponent(Game, Content.Load<Texture2D>("block"));
-            _gameState = new GameStateComponent(Game);
-            _hackerman = new HtpDrawableComponent(Game, Game.HackermanSide, Layer.Background)
+            _grid = new BackgroundGridComponent((HackThePlanetGame)stateManager.Game, Content.Load<Texture2D>("block"));
+            _gameState = new GameStateComponent((HackThePlanetGame)stateManager.Game);
+            _hackerman = new HtpDrawableComponent((HackThePlanetGame)stateManager.Game, HackThePlanetGame.Instance.HackermanSide, Layer.Background)
             {
                 Position = new Vector2(540, 0)
             };

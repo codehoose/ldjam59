@@ -1,10 +1,12 @@
 ﻿namespace HackThePlanet.FSM.Gameplay
 {
+    using HackThePlanet.Models;
+
     internal class InitializeGameState : BaseState<InitializeGameState>
     {
-        public override void Enter(StateManager stateManager)
+        public override void Enter(IStateManager stateManager)
         {
-            stateManager.Game.State.Init();
+            GameState.Instance.Init();
             stateManager.ChangeState(HandoffScreenState.Instance);
         }
     }

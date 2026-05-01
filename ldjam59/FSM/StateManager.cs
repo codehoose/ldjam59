@@ -1,14 +1,18 @@
 ﻿namespace HackThePlanet.FSM
 {
-    internal class StateManager
+    using Microsoft.Xna.Framework;
+
+    public class StateManager<T> : IStateManager<T> where T: Game
     {
         private IState _currentState;
 
-        internal HackThePlanetGame Game { get; }
+        public T Game { get; }
 
-        public StateManager(HackThePlanetGame game) : this(game, null) { }
+        Game IStateManager.Game => Game;
 
-        public StateManager(HackThePlanetGame game, IState initialState)
+        public StateManager(T game) : this(game, null) { }
+
+        public StateManager(T game, IState initialState)
         {
             Game = game;
             if (initialState != null)

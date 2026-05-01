@@ -27,7 +27,7 @@ namespace HackThePlanet.Components.Elements
             if (_lastIndex != _unit.TileIndex)
             {
                 _lastIndex = _unit.TileIndex;
-                var (x, y) = HtpGame.State.GetUnitGridPosition(_unit);
+                var (x, y) = GameState.Instance.GetUnitGridPosition(_unit);
                 Position = new Vector2(x * 54, y * 54);
             }
         }
@@ -40,7 +40,7 @@ namespace HackThePlanet.Components.Elements
             _hasBeenUsed = game.HasBeenUsed;
             IsGhost = unit.IsGhost;
 
-            var (x, y) = HtpGame.State.GetUnitGridPosition(_unit);
+            var (x, y) = GameState.Instance.GetUnitGridPosition(_unit);
             Position = new Vector2(x * 54, y * 54);
 
             // Now let's figure out what type of unit we have

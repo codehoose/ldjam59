@@ -1,13 +1,13 @@
-﻿using HackThePlanet.Components;
-using HackThePlanet.Models;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using System;
-using System.Collections.Generic;
-
-namespace HackThePlanet.FSM
+﻿namespace HackThePlanet.FSM
 {
-    internal abstract class BaseState<T> : IState where T: IState
+    using HackThePlanet.Components;
+    using HackThePlanet.Models;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using System;
+    using System.Collections.Generic;
+
+    public abstract class BaseState<T> : IState where T: IState
     {
         private List<GameComponent> _components = [];
         
@@ -24,17 +24,17 @@ namespace HackThePlanet.FSM
             }
         }
 
-        protected StateManager StateManager { get; private set; }
-        protected HackThePlanetGame Game => StateManager.Game;
+        protected IStateManager StateManager { get; private set; }
+        //protected HackThePlanetGame Game => StateManager.Game;
         protected ContentManager Content => StateManager.Game.Content;
-        protected GameState GameState => StateManager.Game.State;
+        //protected GameState GameState => GameState.Instance;
 
-        public virtual void Enter(StateManager stateManager)
+        public virtual void Enter(IStateManager stateManager)
         {
             StateManager = stateManager;
         }
 
-        public virtual void Exit(StateManager stateManager)
+        public virtual void Exit(IStateManager stateManager)
         {
             foreach (var c in _components)
             {
