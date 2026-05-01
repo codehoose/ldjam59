@@ -1,7 +1,6 @@
 ﻿namespace HackThePlanet.FSM
 {
     using HackThePlanet.Components;
-    using HackThePlanet.Models;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using System;
@@ -25,9 +24,7 @@
         }
 
         protected IStateManager StateManager { get; private set; }
-        //protected HackThePlanetGame Game => StateManager.Game;
         protected ContentManager Content => StateManager.Game.Content;
-        //protected GameState GameState => GameState.Instance;
 
         public virtual void Enter(IStateManager stateManager)
         {
@@ -43,7 +40,7 @@
                     parent.RemoveComponents();
                 }
 
-                HackThePlanetGame.Instance.Components.Remove(c);
+                StateManager.Game.Components.Remove(c);
             }
         }
 
@@ -54,7 +51,7 @@
 
         protected void AddComponent(GameComponent component)
         {
-            HackThePlanetGame.Instance.Components.Add(component);
+            StateManager.Game.Components.Add(component);
             _components.Add(component);
 
             if (component is IParentComponent parent)
@@ -65,7 +62,7 @@
 
         protected void RemoveComponent(GameComponent component)
         {
-            HackThePlanetGame.Instance.Components.Remove(component);
+            StateManager.Game.Components.Remove(component);
             _components.Remove(component);
 
             if (component is IParentComponent parent)
