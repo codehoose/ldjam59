@@ -1,13 +1,13 @@
-﻿using HackThePlanet.Components;
-using HackThePlanet.FSM;
-using HackThePlanet.FSM.Gameplay.Flow;
-using HackThePlanet.Models;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-
-namespace HackThePlanet
+﻿namespace HackThePlanet
 {
+    using Gwydion.Core.FSM;
+    using HackThePlanet.Components;
+    using HackThePlanet.FSM.Flow;
+    using HackThePlanet.Models;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
     public class HackThePlanetGame : Game
     {
         private GraphicsDeviceManager _graphics;

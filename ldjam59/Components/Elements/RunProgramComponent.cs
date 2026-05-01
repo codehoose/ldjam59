@@ -1,6 +1,7 @@
 ﻿namespace HackThePlanet.Components.Elements
 {
-	using HackThePlanet.Models;
+    using Gwydion.Components;
+    using HackThePlanet.Models;
 	using Microsoft.Xna.Framework;
 	using Microsoft.Xna.Framework.Graphics;
 	using System;

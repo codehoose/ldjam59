@@ -1,10 +1,12 @@
-﻿namespace HackThePlanet.FSM.Gameplay
+﻿namespace HackThePlanet.FSM
 {
+    using Gwydion.Core.FSM;
+    using HackThePlanet;
     using HackThePlanet.Commands;
     using HackThePlanet.Commands.Gameplay;
     using HackThePlanet.Components;
     using HackThePlanet.Components.Elements;
-    using HackThePlanet.FSM.Gameplay.Flow;
+    using HackThePlanet.FSM.Flow;
     using HackThePlanet.Input;
     using HackThePlanet.Models;
     using Microsoft.Xna.Framework;

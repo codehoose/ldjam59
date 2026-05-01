@@ -1,8 +1,8 @@
-﻿using HackThePlanet.FSM;
-using Microsoft.Xna.Framework;
-
-namespace HackThePlanet.Components
+﻿namespace HackThePlanet.Components
 {
+    using Gwydion.Core.FSM;
+    using Microsoft.Xna.Framework;
+
     internal class FSMComponent : HtpComponent
     {
         public IStateManager StateManager { get; }

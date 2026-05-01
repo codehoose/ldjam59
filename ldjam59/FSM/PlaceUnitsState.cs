@@ -1,15 +1,17 @@
-﻿using HackThePlanet.Commands;
-using HackThePlanet.Commands.Gameplay;
-using HackThePlanet.Components;
-using HackThePlanet.Components.Elements;
-using HackThePlanet.Input;
-using HackThePlanet.Models;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-
-namespace HackThePlanet.FSM.Gameplay
+﻿namespace HackThePlanet.FSM
 {
+    using Gwydion.Core.FSM;
+    using HackThePlanet;
+    using HackThePlanet.Commands;
+    using HackThePlanet.Commands.Gameplay;
+    using HackThePlanet.Components;
+    using HackThePlanet.Components.Elements;
+    using HackThePlanet.Input;
+    using HackThePlanet.Models;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using System.Collections.Generic;
+
     internal class PlaceUnitsState : MainLoopGameState<PlaceUnitsState>
     {
         enum SummonPhase

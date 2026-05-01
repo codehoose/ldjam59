@@ -1,11 +1,14 @@
-﻿using HackThePlanet.Components;
-using HackThePlanet.Components.Elements;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-
-namespace HackThePlanet.FSM.Gameplay.Flow
+﻿namespace HackThePlanet.FSM.Flow
 {
+    using Gwydion.Core.FSM;
+    using HackThePlanet;
+    using HackThePlanet.Components;
+    using HackThePlanet.Components.Elements;
+    using HackThePlanet.FSM;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using System;
+
     internal class TitleScreenState : BaseState<TitleScreenState>
     {
         private HtpDrawableComponent _background;

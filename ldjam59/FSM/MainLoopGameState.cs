@@ -1,12 +1,13 @@
-﻿using HackThePlanet.Components;
-using HackThePlanet.Components.Elements;
-using HackThePlanet.Models;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-
-namespace HackThePlanet.FSM.Gameplay
+﻿namespace HackThePlanet.FSM
 {
+    using Gwydion.Core.FSM;
+    using HackThePlanet.Components;
+    using HackThePlanet.Components.Elements;
+    using HackThePlanet.Models;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Base class for all main loop base states, this will by default draw the pieces
     /// on the board, the main board etc.

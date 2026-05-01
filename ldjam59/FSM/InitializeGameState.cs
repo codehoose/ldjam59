@@ -1,5 +1,6 @@
-﻿namespace HackThePlanet.FSM.Gameplay
+﻿namespace HackThePlanet.FSM
 {
+    using Gwydion.Core.FSM;
     using HackThePlanet.Models;
 
     internal class InitializeGameState : BaseState<InitializeGameState>

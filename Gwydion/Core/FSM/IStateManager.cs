@@ -1,4 +1,4 @@
-﻿namespace HackThePlanet.FSM
+﻿namespace Gwydion.Core.FSM
 {
     using Microsoft.Xna.Framework;
 

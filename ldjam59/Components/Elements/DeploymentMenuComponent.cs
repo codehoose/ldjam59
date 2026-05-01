@@ -1,10 +1,11 @@
-﻿using HackThePlanet.Models;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-
-namespace HackThePlanet.Components.Elements
+﻿namespace HackThePlanet.Components.Elements
 {
+    using Gwydion.Components;
+    using HackThePlanet.Models;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using System;
+
     internal class DeploymentMenuComponent : HtpComponent, IParentComponent
     {
         private readonly ToggleButtonComponent _deployCrawler;

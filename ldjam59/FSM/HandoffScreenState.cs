@@ -1,12 +1,14 @@
-﻿using HackThePlanet.Components;
-using HackThePlanet.Components.Elements;
-using HackThePlanet.Models;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-
-namespace HackThePlanet.FSM.Gameplay
+﻿namespace HackThePlanet.FSM
 {
+    using Gwydion.Core.FSM;
+    using HackThePlanet;
+    using HackThePlanet.Components;
+    using HackThePlanet.Components.Elements;
+    using HackThePlanet.Models;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using System;
+
     internal class HandoffScreenState : BaseState<HandoffScreenState>
     {
         private ButtonComponent _button;

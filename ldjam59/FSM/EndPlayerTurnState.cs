@@ -1,7 +1,8 @@
-﻿using HackThePlanet.Models;
-
-namespace HackThePlanet.FSM.Gameplay
+﻿namespace HackThePlanet.FSM
 {
+    using Gwydion.Core.FSM;
+    using HackThePlanet.Models;
+
     internal class EndPlayerTurnState : BaseState<EndPlayerTurnState>
     {
         public override void Enter(IStateManager stateManager)

@@ -1,8 +1,10 @@
-﻿using HackThePlanet.Components.Elements;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace HackThePlanet.FSM.Gameplay
+﻿namespace HackThePlanet.FSM
 {
+    using Gwydion.Core.FSM;
+    using HackThePlanet;
+    using HackThePlanet.Components.Elements;
+    using Microsoft.Xna.Framework.Graphics;
+
     internal class RunProgramState : MainLoopGameState<RunProgramState>
     {
         private RunProgramComponent _menu;
